@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
@@ -61,10 +62,21 @@ public class Transaction {
 
 
     //*Helper Methods:
+    //* Will help later and determine if an amount is a positive number or negative number so we can tell if it's a
+    // * deposit or withdrawal when reading from the csv
     public boolean checkIfDeposit() {
         return this.amount > 0;
     }
 
-
+    //* Building a method to easily format each line written into the transactions.csv file
+    //* This will place the correct format & order for the assignment for date, then time, then description, then vendor,
+    //* then amount.
+    public String toCsvLine() {
+        DateTimeFormatter timeFormatter =
+                DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = time.format(timeFormatter);
+        String formattedAmount = String.format("%.2f", amount);
+        return date + "|" + formattedTime + "|" + description + "|" + vendor + "|" + formattedAmount + "\n";
+    }
 
 }
