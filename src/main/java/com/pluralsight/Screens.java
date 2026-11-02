@@ -75,6 +75,7 @@ public class Screens {
                     Transaction newDeposit = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
                     inkAndNeedleTransactions.add(newDeposit);
                     TransactionManager.saveTransaction(newDeposit, fileName);
+                    System.out.printf("\nA new  deposit of %.2f been saved successfully. ", depositAmount);
                     break;
                 case "p":
                     System.out.print("\nPayment amount (e.g. 120.00): $");
@@ -87,7 +88,7 @@ public class Screens {
                     System.out.print("\nWho is the payment to?: ");
                     String paymentVendor = userInput.nextLine().trim();
                     while (paymentVendor.length() == 0) {
-                        System.out.print("Please enter a recipient for the payment.");
+                        System.out.print("Please enter a recipient for the payment: ");
                         paymentVendor = userInput.nextLine().trim();
                     }
                     System.out.print("\nPlease describe this payment (optional): ");
@@ -103,6 +104,7 @@ public class Screens {
                     Transaction newPayment = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
                     inkAndNeedleTransactions.add(newPayment);
                     TransactionManager.saveTransaction(newPayment, fileName);
+                    System.out.printf("\nA new  payment of %.2f been saved successfully. ",  paymentAmount);
                     break;
                 case "l":
                     //* Call to ledgerScreen method for nested screen.
@@ -123,8 +125,12 @@ public class Screens {
 
     public static void ledgerScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
         System.out.println("Welcome to the ledger screen! Please choose an option below: ");
+        int ledgerScreenIteration = 0;
         boolean ledgerScreenRunning = true;
         while (ledgerScreenRunning) {
+            if (ledgerScreenIteration >= 1) {
+                System.out.print("Please choose an option below: \n");
+            }
             System.out.print("""
                 ▪ A) All - Display all entries
                 ▪ D) Deposits - Display only the entries that are deposits into the account
@@ -149,6 +155,7 @@ public class Screens {
                     System.out.println("Please enter a valid option. Refer to the letters next to the options.");
                     break;
             }
+            ledgerScreenIteration++;
         }
 
 //        o A) All - Display all entries
