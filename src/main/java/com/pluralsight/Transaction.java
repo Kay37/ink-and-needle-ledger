@@ -68,6 +68,14 @@ public class Transaction {
         return this.amount > 0;
     }
 
+    //* A helper method to format ledger entries for display to the screen / user (readable / assignment given format)
+    public String transactionDisplayFormat(int entryPosition) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = this.getTime().format(timeFormatter);
+        String formattedString = String.format("%d) %s|%s|%s|%s|%.2f", entryPosition, this.getDate(), formattedTime, this.getDescription(), this.getVendor(), this.getAmount());
+        return formattedString;
+    }
+
     //* Building a method to easily format each line written into the transactions.csv file
     //* This will place the correct format & order for the assignment for date, then time, then description, then vendor,
     //* then amount.

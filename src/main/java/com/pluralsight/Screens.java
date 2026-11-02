@@ -6,6 +6,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Collections;
 
 import static java.lang.String.format;
 
@@ -14,14 +17,14 @@ public class Screens {
     //*Helper method to display welcome banner
     public static void welcomeBanner() {
         System.out.printf("""
-                  ╔════════════════════════════════════════════╗
-                  ║                                            ║
-                  ║         I N K   &   N E E D L E            ║
-                  ║         tattoo studio  ·  ledger           ║
-                  ║                                            ║
-                  ╚════════════════════════════════════════════╝
-                   ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
-                   Welcome back! Today's date and time are %s
+                ╔════════════════════════════════════════════╗
+                ║                                            ║
+                ║         I N K   &   N E E D L E            ║
+                ║         tattoo studio  ·  ledger           ║
+                ║                                            ║
+                ╚════════════════════════════════════════════╝
+                ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+                Welcome back! Today's date and time: %s
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
 
@@ -104,7 +107,7 @@ public class Screens {
                     Transaction newPayment = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
                     inkAndNeedleTransactions.add(newPayment);
                     TransactionManager.saveTransaction(newPayment, fileName);
-                    System.out.printf("\nA new payment amount of $%.2f has been saved.%n",  (paymentAmount * -1));
+                    System.out.printf("\nA new payment amount of $%.2f has been saved.%n", (paymentAmount * -1));
                     break;
                 case "l":
                     //* Call to ledgerScreen method for nested screen.
@@ -124,6 +127,13 @@ public class Screens {
     }
 
     public static void ledgerScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
+
+        ArrayList<Transaction> newestFirstTransactions = new ArrayList<>(inkAndNeedleTransactions);
+        newestFirstTransactions.sort(
+                Comparator.comparing(Transaction::getDate).thenComparing(Transaction::getTime)
+                        .thenComparing(Transaction::getDescription).reversed()
+        );
+
         System.out.println("Welcome to the ledger screen! Please choose an option below: ");
         int ledgerScreenIteration = 0;
         boolean ledgerScreenRunning = true;
@@ -132,19 +142,42 @@ public class Screens {
                 System.out.print("Please choose an option below: \n");
             }
             System.out.print("""
-                ▪ A) All - Display all entries
-                ▪ D) Deposits - Display only the entries that are deposits into the account
-                ▪ P) Payments - Display only the entries that are payments from the account (negative entries)
-                ▪ R) Reports - Display a new screen that allows the user to run reports or run custom searches
-                ▪ H) Home - Return to the home screen / main menu
-                """);
+                    ▪ A) All - Display all entries
+                    ▪ D) Deposits - Display only the entries that are deposits into the account
+                    ▪ P) Payments - Display only the entries that are payments from the account (negative entries)
+                    ▪ R) Reports - Display a new screen that allows the user to run reports or run custom searches
+                    ▪ H) Home - Return to the home screen / main menu
+                    """);
             String ledgerScreenChoice = userInput.nextLine().toLowerCase().trim();
             switch (ledgerScreenChoice) {
                 case "a":
+                    System.out.println("Here is a list of all entries: ");
+                    int transactionCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        System.out.println(transaction.transactionDisplayFormat(transactionCounter));
+                        transactionCounter++;
+                    }
                     break;
                 case "d":
+                    System.out.println("Here is a list of all deposits: ");
+                    int depositCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        if (transaction.checkIfDeposit()) {
+                            System.out.println(transaction.transactionDisplayFormat(depositCounter));
+                            depositCounter++;
+                        }
+
+                    }
                     break;
                 case "p":
+                    System.out.println("Here is a list of all payments: ");
+                    int paymentCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        if (!transaction.checkIfDeposit()) {
+                            System.out.println(transaction.transactionDisplayFormat(paymentCounter));
+                            paymentCounter++;
+                        }
+                    }
                     break;
                 case "r":
                     break;
@@ -158,9 +191,6 @@ public class Screens {
             ledgerScreenIteration++;
         }
 
-//        o A) All - Display all entries
-//        o D) Deposits - Display only the entries that are deposits into the account
-//        o P) Payments - Display only the negative entries (or payments)
 //        o R) Reports - A new screen that allows the user to run pre-defined reports or
 //        to run a custom search
 //▪ 1) Month To Date
@@ -170,6 +200,5 @@ public class Screens {
 //▪ 5) Search by Vendor - prompt the user for the vendor name and
 //        display all entries for that vendor
 //▪ 0) Back - go back to the Ledger page
-//        o H) Home - go back to the home page
     }
 }
