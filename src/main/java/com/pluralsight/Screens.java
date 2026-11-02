@@ -33,15 +33,14 @@ public class Screens {
         //* Looping the menu
         while (menuRunning) {
             System.out.printf("\nPlease choose an option below: ");
-            System.out.printf("\n▪ D) Add Deposit\n▪ P) Make Payment (Debit)\n▪ L) Ledger - display the ledger screen\n▪ X) Exit - exit the application");
+            System.out.printf("\n▪ D) Add Deposit\n▪ P) Make Payment (Debit)\n▪ L) Ledger - display the ledger screen\n▪ X) Exit - exit the application\n");
             String homeScreenChoice = userInput.nextLine().toLowerCase().trim();
 
             switch (homeScreenChoice) {
                 case "d":
-                    System.out.print("\nDeposit amount: (e.g. 105.97): ");
+                    System.out.print("\nDeposit amount (e.g. 105.97): $");
                     double depositAmount = userInput.nextDouble();
-                    userInput.nextLine();
-                    if (depositAmount <= 0) {
+                    while (depositAmount <= 0) {
                         System.out.print("\nPlease enter a positive amount (e.g. 105.97): ");
                         depositAmount = userInput.nextDouble();
                     }
@@ -49,34 +48,34 @@ public class Screens {
                     System.out.print("\nWho is the deposit from? : ");
                     String depositVendor = userInput.nextLine().trim();
 
-                    System.out.print("""
-                    \nPlease describe this deposit: (N/A if you do not want to provide a description): 
-                    """);
+                    System.out.print("\nPlease describe this deposit: (N/A if you do not want to provide a description):");
                     String depositDescription = userInput.nextLine().trim();
 
                     LocalDate date = LocalDate.now();
                     LocalTime time = LocalTime.now();
                     inkAndNeedleTransactions.add(new Transaction(date, time, depositDescription, depositVendor, depositAmount));
                     TransactionManager.saveTransaction(new Transaction(date, time, depositDescription, depositVendor, depositAmount),  fileName);
+                    break;
                 case "p":
-                    System.out.print("\nPayment amount: (e.g. 120.00");
+                    System.out.print("\nPayment amount (e.g. 120.00): ");
                     double paymentAmount = userInput.nextDouble();
-                    userInput.nextLine();
                     while (paymentAmount <= 0) {
                         System.out.print("\nPlease enter a positive amount (e.g. 120.00): ");
                         paymentAmount = userInput.nextDouble();
                     }
                     userInput.nextLine();
-                    System.out.print("\nWho is the payment from? : ");
+                    System.out.print("\nWho is the payment to? : ");
                     String paymentVendor = userInput.nextLine().trim();
-                    System.out.print("""
-            \nPlease describe this payment: (N/A if you do not want to provide a description): 
-            """);
+                    System.out.print("\nPlease describe this payment: (N/A if you do not want to provide a description): ");
                     String paymentDescription = userInput.nextLine().trim();
                     date = LocalDate.now();
                     time = LocalTime.now();
                     paymentAmount *= -1;
                     inkAndNeedleTransactions.add(new Transaction(date, time, paymentDescription, paymentVendor, paymentAmount));
+                    TransactionManager.saveTransaction(new Transaction(date, time, paymentDescription, paymentVendor, paymentAmount), fileName);
+                    break;
+                default:
+
             }
         }
     }
