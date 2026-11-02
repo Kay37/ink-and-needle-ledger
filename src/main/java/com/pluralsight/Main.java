@@ -13,7 +13,10 @@ public class Main {
 
         ArrayList<Transaction> inkAndNeedleTransactions = TransactionManager.loadTransactions(fileName);
 
+        Screens.welcomeBanner();
+
         Screens.homeScreen(userInput, inkAndNeedleTransactions, fileName);
+
     } //! main method cBracket
 
 } //! Main class cBracket
