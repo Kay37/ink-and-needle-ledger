@@ -18,26 +18,26 @@ public class TransactionManager {
 
         //* Using a fileReader wrapped in a BufferedReader to pull the info from transactions.csv / fileName String
         try {
-            BufferedReader eReader = new BufferedReader(new FileReader(fileName));
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
             //* Variable representing each line in the csv
             String csvLine;
             //* Reading and discarding header
-            eReader.readLine();
+            reader.readLine();
             //* Loop that goes line by line in the csv, splits the lines into sections, and stores info into variables
             //* Those variables are then used to build a new Transaction object and add it to our ArrayList
-            while ((csvLine = eReader.readLine()) != null) {
-                String[] transactionsCsvArray = csvLine.split("\\|");
-                LocalDate transactionDate = LocalDate.parse(transactionsCsvArray[0]);
-                LocalTime transactionTime = LocalTime.parse(transactionsCsvArray[1]);
-                String transactionDescription = transactionsCsvArray[2];
-                String transactionVendor = transactionsCsvArray[3];
-                double transactionAmount = Double.parseDouble(transactionsCsvArray[4]);
-                Transaction inkAndNeedleTransaction = new Transaction(transactionDate, transactionTime, transactionDescription, transactionVendor, transactionAmount);
-                transactionsList.add(inkAndNeedleTransaction);
+            while ((csvLine = reader.readLine()) != null) {
+                String[] lineParts = csvLine.split("\\|");
+                LocalDate transactionDate = LocalDate.parse(lineParts[0]);
+                LocalTime transactionTime = LocalTime.parse(lineParts[1]);
+                String transactionDescription = lineParts[2];
+                String transactionVendor = lineParts[3];
+                double transactionAmount = Double.parseDouble(lineParts[4]);
+                Transaction transaction = new Transaction(transactionDate, transactionTime, transactionDescription, transactionVendor, transactionAmount);
+                transactionsList.add(transaction);
             }
             //* Closing FileReader because we are a good person
-            eReader.close();
+            reader.close();
             //* Catch portion of the try & catch in case main argument / code we want to run fails.
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -51,11 +51,11 @@ public class TransactionManager {
     //* will be singular "newTransaction"
     public static void saveTransaction(Transaction newTransaction, String fileName) {
         try {
-            BufferedWriter eWriter = new BufferedWriter(new FileWriter(fileName, true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
             //*FileWriter will call the toCsvLine method to format the new transaction correctly and then write it to
             //* the file
-            eWriter.write(newTransaction.toCsvLine());
-            eWriter.close();
+            writer.write(newTransaction.toCsvLine());
+            writer.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Error writing new transaction to file: " + fileName);

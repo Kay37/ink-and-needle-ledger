@@ -87,6 +87,13 @@ date|time|description|vendor|amount
 <!-- TODO: a few sentences in your own words, e.g. reading and writing files,
      working with LocalDate for the reports, organizing code into classes. -->
 
+## How I used AI
+
+I wrote the Java code myself. I used Claude (an AI assistant) as a coach: it explained
+error messages and Java ideas, asked questions to point me toward fixes, and reviewed code
+I had already written. With my instructor's OK, Claude also wrote this README and generated
+the sample data in `transactions.csv`.
+
 ## Author
 
 Kimball ([@Kay37](https://github.com/Kay37))
