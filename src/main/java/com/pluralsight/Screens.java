@@ -39,7 +39,7 @@ public class Screens {
         //* Looping the menu
         while (homeScreenRunning) {
             if (homeScreenIteration >= 1) {
-                System.out.print("Please choose an option below: ");
+                System.out.print("Please choose an option below: \n");
             }
             //* Printing options / cases to the user
             System.out.printf("\n▪ D) Add Deposit\n▪ P) Make Payment (Debit)\n▪ L) Ledger - display the ledger screen\n▪ X) Exit - exit the application\n");
@@ -75,7 +75,7 @@ public class Screens {
                     Transaction newDeposit = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
                     inkAndNeedleTransactions.add(newDeposit);
                     TransactionManager.saveTransaction(newDeposit, fileName);
-                    System.out.printf("\nA new  deposit of %.2f been saved successfully. ", depositAmount);
+                    System.out.printf("\nA new deposit amount of $%.2f has been saved.%n", depositAmount);
                     break;
                 case "p":
                     System.out.print("\nPayment amount (e.g. 120.00): $");
@@ -104,7 +104,7 @@ public class Screens {
                     Transaction newPayment = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
                     inkAndNeedleTransactions.add(newPayment);
                     TransactionManager.saveTransaction(newPayment, fileName);
-                    System.out.printf("\nA new  payment of %.2f been saved successfully. ",  paymentAmount);
+                    System.out.printf("\nA new payment amount of $%.2f has been saved.%n",  (paymentAmount * -1));
                     break;
                 case "l":
                     //* Call to ledgerScreen method for nested screen.
