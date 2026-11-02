@@ -59,7 +59,7 @@ public class Screens {
                     userInput.nextLine();
                     System.out.print("\nWho is the deposit from?: ");
                     String depositVendor = userInput.nextLine().trim();
-                    while (depositVendor.length() <= 1) {
+                    while (depositVendor.length() == 0) {
                         System.out.print("Please designate who the deposit is from: ");
                         depositVendor = userInput.nextLine().trim();
                     }
@@ -86,7 +86,7 @@ public class Screens {
                     userInput.nextLine();
                     System.out.print("\nWho is the payment to?: ");
                     String paymentVendor = userInput.nextLine().trim();
-                    while (paymentVendor.length() <= 1) {
+                    while (paymentVendor.length() == 0) {
                         System.out.print("Please enter a recipient for the payment.");
                         paymentVendor = userInput.nextLine().trim();
                     }
