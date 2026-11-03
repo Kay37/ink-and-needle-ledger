@@ -52,14 +52,23 @@ public class Screens {
             switch (homeScreenChoice) {
                 case "d":
                     System.out.print("\nDeposit amount (e.g. 105.97): $");
+                    while (!userInput.hasNextDouble()) {
+                        userInput.nextLine();
+                        System.out.print("Please enter a number: $");
+                    }
                     double depositAmount = userInput.nextDouble();
+                    userInput.nextLine();
                     //* A while loop for if the user enters a negative number. Will persist until they enter a positive #
                     while (depositAmount <= 0) {
                         System.out.print("\nPlease enter a positive amount (e.g. 105.97): $");
+                        while (!userInput.hasNextDouble()) {
+                            userInput.nextLine();
+                            System.out.print("Please enter a number: $");
+                        }
                         depositAmount = userInput.nextDouble();
+                        userInput.nextLine();
                     }
-                    //* Absorbing memory of enter key pressed when storing the user's Double response
-                    userInput.nextLine();
+
                     System.out.print("\nWho is the deposit from?: ");
                     String depositVendor = userInput.nextLine().trim();
                     while (depositVendor.length() == 0) {
@@ -82,18 +91,30 @@ public class Screens {
                     break;
                 case "p":
                     System.out.print("\nPayment amount (e.g. 120.00): $");
+                    while (!userInput.hasNextDouble()) {
+                        userInput.nextLine();
+                        System.out.print("Please enter a number: $");
+                    }
                     double paymentAmount = userInput.nextDouble();
+                    userInput.nextLine();
+
                     while (paymentAmount <= 0) {
                         System.out.print("\nPlease enter a positive amount (e.g. 120.00): $");
+                        while (!userInput.hasNextDouble()) {
+                            userInput.nextLine();
+                            System.out.print("Please enter a number: $");
+                        }
                         paymentAmount = userInput.nextDouble();
+                        userInput.nextLine();
                     }
-                    userInput.nextLine();
+
                     System.out.print("\nWho is the payment to?: ");
                     String paymentVendor = userInput.nextLine().trim();
                     while (paymentVendor.length() == 0) {
                         System.out.print("Please enter a recipient for the payment: ");
                         paymentVendor = userInput.nextLine().trim();
                     }
+
                     System.out.print("\nPlease describe this payment (optional): ");
                     String paymentDescription = userInput.nextLine().trim();
                     if (paymentDescription.length() == 0) {
