@@ -249,7 +249,7 @@ public class Screens {
                         }
                     }
                     if (monthToDateCounter == 1) {
-                        System.out.println("No transactions yet this month.");
+                        System.out.println("No transactions for the month to date.");
                     }
                     break;
                 case 2:
@@ -267,6 +267,17 @@ public class Screens {
                     }
                     break;
                 case 3:
+                    int yearToDateCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        LocalDate transactionsEntryDate = transaction.getDate();
+                        if (transactionsEntryDate.getYear() == today.getYear()) {
+                            System.out.println(transaction.transactionDisplayFormat(yearToDateCounter));
+                            yearToDateCounter++;
+                        }
+                    }
+                    if (yearToDateCounter == 1) {
+                        System.out.println("No transactions for the year to date.");
+                    }
                     break;
                 case 4:
                     break;
