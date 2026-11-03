@@ -7,10 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Collections;
-
-import static java.lang.String.format;
 
 public class Screens {
 
@@ -201,7 +197,7 @@ public class Screens {
                     }
                     break;
                 case "r":
-                    Screens.reportsScreen(userInput, inkAndNeedleTransactions, fileName);
+                    Screens.reportsScreen(userInput, newestFirstTransactions, fileName);
                     break;
                 case "h":
                     ledgerScreenRunning = false;
@@ -215,8 +211,10 @@ public class Screens {
 
     }
 
-    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
+    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions, String fileName) {
         System.out.println("Welcome to the reports screen! Please choose an option below: ");
+        LocalDate today = LocalDate.now();
+        LocalDate lastMonth = today.minusMonths(1);
         int reportsScreenIteration = 0;
         boolean reportsScreenRunning = true;
         while (reportsScreenRunning) {
@@ -242,11 +240,31 @@ public class Screens {
                 case 1:
                     int monthToDateCounter = 1;
 
-                    for (Transaction transaction : inkAndNeedleTransactions) {
-                        if (transaction.getDate() == (transaction.getDate(LocalDate.now() - 1 month))) {}
+                    for (Transaction transaction : newestFirstTransactions) {
+                        LocalDate transactionsEntryDate = transaction.getDate();
+                        if (transactionsEntryDate.getMonthValue() == today.getMonthValue()
+                                && transactionsEntryDate.getYear() == today.getYear()) {
+                            System.out.println(transaction.transactionDisplayFormat(monthToDateCounter));
+                            monthToDateCounter++;
+                        }
+                    }
+                    if (monthToDateCounter == 1) {
+                        System.out.println("No transactions yet this month.");
                     }
                     break;
                 case 2:
+                    int previousMonthCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        LocalDate transactionsEntryDate = transaction.getDate();
+                        if (transactionsEntryDate.getMonthValue() == (lastMonth.getMonthValue())
+                        && transactionsEntryDate.getYear() == lastMonth.getYear()) {
+                            System.out.println(transaction.transactionDisplayFormat(previousMonthCounter));
+                            previousMonthCounter++;
+                        }
+                    }
+                    if (previousMonthCounter == 1) {
+                        System.out.println("No transactions for the previous month.");
+                    }
                     break;
                 case 3:
                     break;
@@ -262,7 +280,7 @@ public class Screens {
                 default:
                     System.out.println("Please enter a valid option. Refer to the numbers next to the options.");
                     break;
-        }
+            }
             reportsScreenIteration++;
         }
     }
