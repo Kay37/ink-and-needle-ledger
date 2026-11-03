@@ -371,8 +371,22 @@ public class Screens {
                     }
 
                     System.out.print("\nAmount (e.g. 50.00 or press Enter to skip): $");
-
                     String cSearchAmount = userInput.nextLine().trim();
+                    boolean validSearchAmount = false;
+
+                    while (!validSearchAmount) {
+                        if (cSearchAmount.isEmpty()) {
+                            validSearchAmount = true;
+                        } else {
+                            try {
+                                Double.parseDouble(cSearchAmount);
+                                validSearchAmount = true;
+                            }  catch (NumberFormatException e) {
+                                System.out.print("Please enter a valid amount in a xx.xx format (e.g. 59.99): ");
+                                cSearchAmount = userInput.nextLine().trim();
+                            }
+                        }
+                    }
 
                     int cSearchCounter = 1;
                     for (Transaction transaction : newestFirstTransactions) {
@@ -414,7 +428,12 @@ public class Screens {
                             }
                         }
 //                        Amount:
-
+                        if (!cSearchAmount.isEmpty()) {
+                            double searchAmount = Double.parseDouble(cSearchAmount);
+                            if (Math.abs(searchAmount) != (Math.abs(transaction.getAmount()))) {
+                                isMatch = false;
+                            }
+                        }
 
                         if (isMatch) {
                             System.out.println(transaction.transactionDisplayFormat(cSearchCounter));
