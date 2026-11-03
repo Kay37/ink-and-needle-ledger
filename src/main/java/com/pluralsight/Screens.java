@@ -318,6 +318,63 @@ public class Screens {
                     break;
                 case 6:
 //                    Custom Search
+                    System.out.println("Please provide the following information for a custom search: ");
+                    System.out.print("\nStart Date (yyyy-mm-dd, or press Enter to skip): ");
+                    String cSearchStartDate =  userInput.nextLine().trim();
+
+                    System.out.print("\nEnd Date (yyyy-mm-dd, or press Enter to skip): ");
+                    String cSearchEndDate =  userInput.nextLine().trim();
+
+                    System.out.print("\nDescription (or press Enter to skip): ");
+                    String cSearchDescription = userInput.nextLine().trim().toLowerCase();
+
+                    System.out.print("\nVendor (or press Enter to skip): ");
+                    String cSearchVendor = userInput.nextLine().trim().toLowerCase();
+
+                    System.out.print("\nDeposit or Payment? (or press Enter to skip): ");
+                    String cSearchEntryType =  userInput.nextLine().trim().toLowerCase();
+                    while (!cSearchEntryType.equals("deposit") && !cSearchEntryType.equals("payment") && !cSearchEntryType.isEmpty()) {
+                        System.out.print("Please answer 'Deposit' or 'Payment' letter for letter:" );
+                        cSearchEntryType = userInput.nextLine().trim().toLowerCase();
+                    }
+
+                    System.out.print("\nAmount (e.g. 50.00 or press Enter to skip): $");
+
+                    String cSearchAmount = userInput.nextLine().trim();
+
+                    int cSearchCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        boolean isMatch = true;
+                        //Description
+                        if (cSearchDescription.length() > 0 && !transaction.getDescription().toLowerCase().contains(cSearchDescription)) {
+                            isMatch = false;
+                        }
+                        //Vendor
+                        if (cSearchVendor.length() > 0 && !transaction.getVendor().toLowerCase().contains(cSearchVendor)) {
+                            isMatch = false;
+                        }
+
+                        //Deposit?
+                        if (cSearchEntryType.equals("deposit")) {
+                            if (!transaction.checkIfDeposit()) {
+                                isMatch = false;
+                            }
+                        }
+                        //Payment?
+                        if (cSearchEntryType.equals("payment")) {
+                            if (transaction.checkIfDeposit()) {
+                                isMatch =  false;
+                            }
+                        }
+
+                        if (isMatch) {
+                            System.out.println(transaction.transactionDisplayFormat(cSearchCounter));
+                            cSearchCounter++;
+                        }
+                    }
+                    if (cSearchCounter == 1) {
+                        System.out.println("No results for that custom search. ");
+                    }
                     break;
                 case 0:
                     reportsScreenRunning = false;
