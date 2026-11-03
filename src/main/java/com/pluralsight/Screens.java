@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Comparator;
@@ -215,7 +216,7 @@ public class Screens {
         System.out.println("Welcome to the reports screen! Please choose an option below: ");
         LocalDate today = LocalDate.now();
         LocalDate lastMonth = today.minusMonths(1);
-        LocalDate lastYear =  today.minusYears(1);
+        LocalDate lastYear = today.minusYears(1);
         int reportsScreenIteration = 0;
         boolean reportsScreenRunning = true;
         while (reportsScreenRunning) {
@@ -260,7 +261,7 @@ public class Screens {
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
                         if (transactionsEntryDate.getMonthValue() == (lastMonth.getMonthValue())
-                        && transactionsEntryDate.getYear() == lastMonth.getYear()) {
+                                && transactionsEntryDate.getYear() == lastMonth.getYear()) {
                             System.out.println(transaction.transactionDisplayFormat(previousMonthCounter));
                             previousMonthCounter++;
                         }
@@ -320,10 +321,41 @@ public class Screens {
 //                    Custom Search
                     System.out.println("Please provide the following information for a custom search: ");
                     System.out.print("\nStart Date (yyyy-mm-dd, or press Enter to skip): ");
-                    String cSearchStartDate =  userInput.nextLine().trim();
+                    String cSearchStartDate = userInput.nextLine().trim();
+                    boolean validStartDate = false;
+
+                    while (!validStartDate) {
+                        if (cSearchStartDate.isEmpty()) {
+                            validStartDate = true;
+                        } else {
+                            try {
+                                LocalDate.parse(cSearchStartDate);
+                                validStartDate = true;
+                            } catch (DateTimeParseException e) {
+                                System.out.print("Please enter a valid date (yyyy-mm-dd) or press Enter to skip: ");
+                                cSearchStartDate = userInput.nextLine().trim();
+                            }
+                        }
+                    }
+
 
                     System.out.print("\nEnd Date (yyyy-mm-dd, or press Enter to skip): ");
-                    String cSearchEndDate =  userInput.nextLine().trim();
+                    String cSearchEndDate = userInput.nextLine().trim();
+                    boolean validEndDate = false;
+
+                    while (!validEndDate) {
+                        if (cSearchEndDate.isEmpty()) {
+                            validEndDate = true;
+                        } else {
+                            try {
+                                LocalDate.parse(cSearchEndDate);
+                                validEndDate = true;
+                            } catch (DateTimeParseException e) {
+                                System.out.print("Please enter a valid date (yyyy-mm-dd) or press Enter to skip: ");
+                                cSearchEndDate = userInput.nextLine().trim();
+                            }
+                        }
+                    }
 
                     System.out.print("\nDescription (or press Enter to skip): ");
                     String cSearchDescription = userInput.nextLine().trim().toLowerCase();
@@ -332,9 +364,9 @@ public class Screens {
                     String cSearchVendor = userInput.nextLine().trim().toLowerCase();
 
                     System.out.print("\nDeposit or Payment? (or press Enter to skip): ");
-                    String cSearchEntryType =  userInput.nextLine().trim().toLowerCase();
+                    String cSearchEntryType = userInput.nextLine().trim().toLowerCase();
                     while (!cSearchEntryType.equals("deposit") && !cSearchEntryType.equals("payment") && !cSearchEntryType.isEmpty()) {
-                        System.out.print("Please answer 'Deposit' or 'Payment' letter for letter:" );
+                        System.out.print("Please answer 'Deposit' or 'Payment' letter for letter:");
                         cSearchEntryType = userInput.nextLine().trim().toLowerCase();
                     }
 
@@ -363,14 +395,32 @@ public class Screens {
                         //Payment?
                         if (cSearchEntryType.equals("payment")) {
                             if (transaction.checkIfDeposit()) {
-                                isMatch =  false;
+                                isMatch = false;
                             }
                         }
+
+//                        Start Date:
+                        if (!cSearchStartDate.isEmpty()) {
+                            LocalDate startDate = LocalDate.parse(cSearchStartDate);
+                            if (transaction.getDate().isBefore(startDate)) {
+                                isMatch = false;
+                            }
+                        }
+//                        End Date:
+                        if (!cSearchEndDate.isEmpty()) {
+                            LocalDate endDate = LocalDate.parse(cSearchEndDate);
+                            if (transaction.getDate().isAfter(endDate)) {
+                                isMatch = false;
+                            }
+                        }
+//                        Amount:
+
 
                         if (isMatch) {
                             System.out.println(transaction.transactionDisplayFormat(cSearchCounter));
                             cSearchCounter++;
                         }
+
                     }
                     if (cSearchCounter == 1) {
                         System.out.println("No results for that custom search. ");
