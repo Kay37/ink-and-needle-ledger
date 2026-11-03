@@ -215,6 +215,7 @@ public class Screens {
         System.out.println("Welcome to the reports screen! Please choose an option below: ");
         LocalDate today = LocalDate.now();
         LocalDate lastMonth = today.minusMonths(1);
+        LocalDate lastYear =  today.minusYears(1);
         int reportsScreenIteration = 0;
         boolean reportsScreenRunning = true;
         while (reportsScreenRunning) {
@@ -238,6 +239,7 @@ public class Screens {
             userInput.nextLine();
             switch (reportsScreenChoice) {
                 case 1:
+//                    Month To Date
                     int monthToDateCounter = 1;
 
                     for (Transaction transaction : newestFirstTransactions) {
@@ -253,6 +255,7 @@ public class Screens {
                     }
                     break;
                 case 2:
+//                    Previous Month
                     int previousMonthCounter = 1;
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
@@ -267,6 +270,7 @@ public class Screens {
                     }
                     break;
                 case 3:
+//                    Year To Date
                     int yearToDateCounter = 1;
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
@@ -280,10 +284,40 @@ public class Screens {
                     }
                     break;
                 case 4:
+//                    Previous Year
+                    int previousYearCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        LocalDate transactionsEntryDate = transaction.getDate();
+                        if (transactionsEntryDate.getYear() == lastYear.getYear()) {
+                            System.out.println(transaction.transactionDisplayFormat(previousYearCounter));
+                            previousYearCounter++;
+                        }
+                    }
+                    if (previousYearCounter == 1) {
+                        System.out.println("No transactions for the previous year.");
+                    }
                     break;
                 case 5:
+//                    Search By Vendor
+                    System.out.print("\nEnter the vendor name you would like to search by: ");
+                    String vendorName = userInput.nextLine().trim().toLowerCase();
+                    while (vendorName.length() == 0) {
+                        System.out.print("Please enter a vendor name: ");
+                        vendorName = userInput.nextLine().trim().toLowerCase();
+                    }
+                    int searchByVendorCounter = 1;
+                    for (Transaction transaction : newestFirstTransactions) {
+                        if (transaction.getVendor().toLowerCase().contains(vendorName)) {
+                            System.out.println(transaction.transactionDisplayFormat(searchByVendorCounter));
+                            searchByVendorCounter++;
+                        }
+                    }
+                    if (searchByVendorCounter == 1) {
+                        System.out.println("No transactions for that vendor name.");
+                    }
                     break;
                 case 6:
+//                    Custom Search
                     break;
                 case 0:
                     reportsScreenRunning = false;
