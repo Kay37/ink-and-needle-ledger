@@ -201,6 +201,7 @@ public class Screens {
                     }
                     break;
                 case "r":
+                    Screens.reportsScreen(userInput, inkAndNeedleTransactions, fileName);
                     break;
                 case "h":
                     ledgerScreenRunning = false;
@@ -212,14 +213,58 @@ public class Screens {
             ledgerScreenIteration++;
         }
 
-//        o R) Reports - A new screen that allows the user to run pre-defined reports or
-//        to run a custom search
-//▪ 1) Month To Date
-//▪ 2) Previous Month
-//▪ 3) Year To Date
-//▪ 4) Previous Year
-//▪ 5) Search by Vendor - prompt the user for the vendor name and
-//        display all entries for that vendor
-//▪ 0) Back - go back to the Ledger page
     }
+
+    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
+        System.out.println("Welcome to the reports screen! Please choose an option below: ");
+        int reportsScreenIteration = 0;
+        boolean reportsScreenRunning = true;
+        while (reportsScreenRunning) {
+            if (reportsScreenIteration >= 1) {
+                System.out.print("Please choose an option below: \n");
+            }
+            System.out.print("""
+                    ▪ 1) Month To Date
+                    ▪ 2) Previous Month
+                    ▪ 3) Year To Date
+                    ▪ 4) Previous Year
+                    ▪ 5) Search by Vendor
+                    ▪ 6) Custom Search
+                    ▪ 0) Back - go back to the Ledger screen
+                    """);
+            while (!userInput.hasNextInt()) {
+                userInput.nextLine();
+                System.out.println("Please enter a valid choice/number. Refer to the numbered options for your choices.");
+            }
+            int reportsScreenChoice = userInput.nextInt();
+            userInput.nextLine();
+            switch (reportsScreenChoice) {
+                case 1:
+                    int monthToDateCounter = 1;
+
+                    for (Transaction transaction : inkAndNeedleTransactions) {
+                        if (transaction.getDate() == (transaction.getDate(LocalDate.now() - 1 month))) {}
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 0:
+                    reportsScreenRunning = false;
+                    break;
+                default:
+                    System.out.println("Please enter a valid option. Refer to the numbers next to the options.");
+                    break;
+        }
+            reportsScreenIteration++;
+        }
+    }
+
 }
