@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Comparator;
 
+import static java.lang.String.format;
+
 public class Screens {
 
     //! Helper method to display welcome banner
@@ -26,10 +28,21 @@ public class Screens {
     }
 
     public static void printTable(ArrayList<Transaction> transactionsToShow) {
-
-        //*Header for our Table
-
-        
+        //* Code block for my table header (if not empty)
+        if (transactionsToShow.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+        //*Header printing
+        System.out.printf("%3s  %-10s|%-8s|%-36s|%-20s|%11s%n", "#", "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
+        //* Header separation / divider
+        System.out.println("─".repeat(94));
+        int tablePosition = 1;
+        //* Loop to then format and print each row / line in the ArrayList after the header.
+        for (Transaction transaction : transactionsToShow) {
+            System.out.println(transaction.transactionDisplayFormat(tablePosition));
+            tablePosition++;
+        }
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
@@ -185,33 +198,27 @@ public class Screens {
             String ledgerScreenChoice = userInput.nextLine().toLowerCase().trim();
             switch (ledgerScreenChoice) {
                 case "a":
-                    System.out.println("Here is a list of all entries: ");
-                    int transactionCounter = 1;
-                    for (Transaction transaction : newestFirstTransactions) {
-                        System.out.println(transaction.transactionDisplayFormat(transactionCounter));
-                        transactionCounter++;
-                    }
+                    printTable(newestFirstTransactions);
                     break;
                 case "d":
                     System.out.println("Here is a list of all deposits: ");
-                    int depositCounter = 1;
+                    ArrayList<Transaction> depositsOnly = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         if (transaction.checkIfDeposit()) {
-                            System.out.println(transaction.transactionDisplayFormat(depositCounter));
-                            depositCounter++;
+                            depositsOnly.add(transaction);
                         }
-
                     }
+                    printTable(depositsOnly);
                     break;
                 case "p":
                     System.out.println("Here is a list of all payments: ");
-                    int paymentCounter = 1;
+                    ArrayList<Transaction> paymentsOnly = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         if (!transaction.checkIfDeposit()) {
-                            System.out.println(transaction.transactionDisplayFormat(paymentCounter));
-                            paymentCounter++;
+                            paymentsOnly.add(transaction);
                         }
                     }
+                    printTable(paymentsOnly);
                     break;
                 case "r":
                     Screens.reportsScreen(userInput, newestFirstTransactions);
