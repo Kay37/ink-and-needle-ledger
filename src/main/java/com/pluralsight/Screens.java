@@ -20,13 +20,16 @@ public class Screens {
                 ║         tattoo studio  ·  ledger           ║
                 ║                                            ║
                 ╚════════════════════════════════════════════╝
-                ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+                ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
                 Welcome back! Today's date and time: %s
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
 
-    public static void printTable() {
+    public static void printTable(ArrayList<Transaction> transactionsToShow) {
 
+        //*Header for our Table
+
+        
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
@@ -35,12 +38,12 @@ public class Screens {
     public static void homeScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
 
         //? Welcoming the user to the main menu
-        System.out.printf("\nWelcome to the main menu! Please choose an option below: ");
+        System.out.print("\nWelcome to the main menu! Please choose an option below: ");
 
         //? This is a variable (boolean) to keep the menu looping
         boolean homeScreenRunning = true;
 
-        //? Variable to count how many times the home screen has repeated / looped (welcome message / sout timing)
+        //? Variable to count how many times the home screen has repeated / looped (welcome message / system out timing)
         int homeScreenIteration = 0;
         //? Looping the menu
         while (homeScreenRunning) {
@@ -48,7 +51,7 @@ public class Screens {
                 System.out.print("Please choose an option below: \n");
             }
             //? Printing options / cases to the user
-            System.out.printf("\n▪ D) Add Deposit\n▪ P) Make Payment (Debit)\n▪ L) Ledger - display the ledger screen\n▪ X) Exit - exit the application\n");
+            System.out.print("\n▪ D) Add Deposit\n▪ P) Make Payment (Debit)\n▪ L) Ledger - display the ledger screen\n▪ X) Exit - exit the application\n");
             //? Recording the user's choice; converting it to lower case, trimming, then storing it in a String variable.
             String homeScreenChoice = userInput.nextLine().toLowerCase().trim();
             //? Switch statement for the different choices
@@ -77,14 +80,14 @@ public class Screens {
 
                     System.out.print("\nWho is the deposit from?: ");
                     String depositVendor = userInput.nextLine().trim();
-                    while (depositVendor.length() == 0) {
+                    while (depositVendor.isEmpty()) {
                         System.out.print("Please designate who the deposit is from: ");
                         depositVendor = userInput.nextLine().trim();
                     }
 
                     System.out.print("\nPlease describe this deposit (optional): ");
                     String depositDescription = userInput.nextLine().trim();
-                    if (depositDescription.length() == 0) {
+                    if (depositDescription.isEmpty()) {
                         depositDescription = "No Description";
                     }
 
@@ -116,19 +119,19 @@ public class Screens {
 
                     System.out.print("\nWho is the payment to?: ");
                     String paymentVendor = userInput.nextLine().trim();
-                    while (paymentVendor.length() == 0) {
+                    while (paymentVendor.isEmpty()) {
                         System.out.print("Please enter a recipient for the payment: ");
                         paymentVendor = userInput.nextLine().trim();
                     }
 
                     System.out.print("\nPlease describe this payment (optional): ");
                     String paymentDescription = userInput.nextLine().trim();
-                    if (paymentDescription.length() == 0) {
+                    if (paymentDescription.isEmpty()) {
                         paymentDescription = "No Description";
                     }
                     LocalDate paymentDate = LocalDate.now();
                     LocalTime paymentTime = LocalTime.now();
-                    //* For payments we have to convert the number they provided to a negative number
+                    //* For payments, we have to convert the number they provided to a negative number
                     //* Converting it ourselves instead of asking the user for the negative # saves confusion.
                     paymentAmount *= -1;
                     Transaction newPayment = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
@@ -138,7 +141,7 @@ public class Screens {
                     break;
                 case "l":
                     //* Call to ledgerScreen method for nested screen.
-                    Screens.ledgerScreen(userInput, inkAndNeedleTransactions, fileName);
+                    Screens.ledgerScreen(userInput, inkAndNeedleTransactions);
                     break;
                 case "x":
                     System.out.println("Thank you for using this application!");
@@ -157,7 +160,7 @@ public class Screens {
     //! method.
     //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
     //! information / run code it doesn't return anything.
-    public static void ledgerScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
+    public static void ledgerScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions) {
 
         ArrayList<Transaction> newestFirstTransactions = new ArrayList<>(inkAndNeedleTransactions);
         newestFirstTransactions.sort(
@@ -211,7 +214,7 @@ public class Screens {
                     }
                     break;
                 case "r":
-                    Screens.reportsScreen(userInput, newestFirstTransactions, fileName);
+                    Screens.reportsScreen(userInput, newestFirstTransactions);
                     break;
                 case "h":
                     ledgerScreenRunning = false;
@@ -228,7 +231,7 @@ public class Screens {
     //!Same deal as the ledgerScreen method. reportsScreen is nested within the ledgerScreen.
     //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
     //! information / run code it doesn't return anything.
-    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions, String fileName) {
+    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions) {
         System.out.println("Welcome to the reports screen! Please choose an option below: ");
 
         //
@@ -320,7 +323,7 @@ public class Screens {
 //                    Search By Vendor
                     System.out.print("\nEnter the vendor name you would like to search by: ");
                     String vendorName = userInput.nextLine().trim().toLowerCase();
-                    while (vendorName.length() == 0) {
+                    while (vendorName.isEmpty()) {
                         System.out.print("Please enter a vendor name: ");
                         vendorName = userInput.nextLine().trim().toLowerCase();
                     }
@@ -409,11 +412,12 @@ public class Screens {
                     for (Transaction transaction : newestFirstTransactions) {
                         boolean isMatch = true;
                         //Description
-                        if (cSearchDescription.length() > 0 && !transaction.getDescription().toLowerCase().contains(cSearchDescription)) {
-                            isMatch = false;
-                        }
+                        if (!cSearchDescription.isEmpty())
+                            if (!transaction.getDescription().toLowerCase().contains(cSearchDescription)) {
+                                isMatch = false;
+                            }
                         //Vendor
-                        if (cSearchVendor.length() > 0 && !transaction.getVendor().toLowerCase().contains(cSearchVendor)) {
+                        if (!cSearchVendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(cSearchVendor)) {
                             isMatch = false;
                         }
 

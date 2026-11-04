@@ -79,7 +79,20 @@ public class Transaction {
         String formattedTime = this.getTime().format(timeFormatter);
         //? formattedString variable that takes the formatted current time and combines it with the other getters
         //? that the user will want to see for ledger entries when displaying them.
-        String formattedString = String.format("%3d) %10s|%8s|%26s|%20s|%11.2f", entryPosition, this.getDate(), formattedTime, this.getDescription(), this.getVendor(), this.getAmount());
+
+        //* formatting the description and vendor to fit within my width constraints below
+        String formattedDescription = this.getDescription();
+        if (formattedDescription.length() > 36) {
+            formattedDescription = formattedDescription.substring(0, 35) + "…";
+        }
+        String formattedVendor = this.getVendor();
+        if (formattedVendor.length() > 20) {
+            formattedVendor = formattedVendor.substring(0, 19) + "…";
+        }
+
+        // * a number before a placeholder indicates a width amount. a positive number indicates a width pushing it to
+        // * the right. -26 would be to the left.
+        String formattedString = String.format("%3d) %10s|%8s|%-36s|%-20s|%,11.2f", entryPosition, this.getDate(), formattedTime, formattedDescription, formattedVendor, this.getAmount());
         return formattedString;
     }
 
