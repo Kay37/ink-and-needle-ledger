@@ -11,7 +11,7 @@ import java.util.Comparator;
 
 public class Screens {
 
-    //*Helper method to display welcome banner
+    //! Helper method to display welcome banner
     public static void welcomeBanner() {
         System.out.printf("""
                 ╔════════════════════════════════════════════╗
@@ -25,27 +25,29 @@ public class Screens {
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
 
-    //*Method that will display the Home Screen when called / user chooses that action
+    //! Method that will display the Home Screen when called / user chooses that action.
+    //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
+    //! information / run code it doesn't return anything.
     public static void homeScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
 
-        //* Welcoming the user to the main menu
+        //? Welcoming the user to the main menu
         System.out.printf("\nWelcome to the main menu! Please choose an option below: ");
 
-        //*This is a variable (boolean) to keep the menu looping
+        //? This is a variable (boolean) to keep the menu looping
         boolean homeScreenRunning = true;
 
-        //* Variable to count how many times the home screen has repeated / looped (welcome message / sout timing)
+        //? Variable to count how many times the home screen has repeated / looped (welcome message / sout timing)
         int homeScreenIteration = 0;
-        //* Looping the menu
+        //? Looping the menu
         while (homeScreenRunning) {
             if (homeScreenIteration >= 1) {
                 System.out.print("Please choose an option below: \n");
             }
-            //* Printing options / cases to the user
+            //? Printing options / cases to the user
             System.out.printf("\n▪ D) Add Deposit\n▪ P) Make Payment (Debit)\n▪ L) Ledger - display the ledger screen\n▪ X) Exit - exit the application\n");
-            //* Recording the user's choice; converting it to lower case, trimming, then storing it in a String variable.
+            //? Recording the user's choice; converting it to lower case, trimming, then storing it in a String variable.
             String homeScreenChoice = userInput.nextLine().toLowerCase().trim();
-            //* Switch statement for the different choices
+            //? Switch statement for the different choices
             switch (homeScreenChoice) {
                 case "d":
                     System.out.print("\nDeposit amount (e.g. 105.97): $");
@@ -55,9 +57,12 @@ public class Screens {
                     }
                     double depositAmount = userInput.nextDouble();
                     userInput.nextLine();
-                    //* A while loop for if the user enters a negative number. Will persist until they enter a positive #
+                    //? A while loop for if the user enters a negative number. Will persist until they enter a positive #
                     while (depositAmount <= 0) {
                         System.out.print("\nPlease enter a positive amount (e.g. 105.97): $");
+                        //? Nested while loop within our previous while loop. This one checks to see if the user input
+                        //? was in fact a Double like we want. If not (like a letter), it will refuse it and ask again.
+                        //? Does this until the userInput hasNextDouble.
                         while (!userInput.hasNextDouble()) {
                             userInput.nextLine();
                             System.out.print("Please enter a number: $");
@@ -144,6 +149,10 @@ public class Screens {
         }
     }
 
+    //! A method for the ledgerScreen that you can choose from the homeScreen. We call to it from within the homeScreen
+    //! method.
+    //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
+    //! information / run code it doesn't return anything.
     public static void ledgerScreen(Scanner userInput, ArrayList<Transaction> inkAndNeedleTransactions, String fileName) {
 
         ArrayList<Transaction> newestFirstTransactions = new ArrayList<>(inkAndNeedleTransactions);
@@ -212,8 +221,13 @@ public class Screens {
 
     }
 
+    //!Same deal as the ledgerScreen method. reportsScreen is nested within the ledgerScreen.
+    //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
+    //! information / run code it doesn't return anything.
     public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions, String fileName) {
         System.out.println("Welcome to the reports screen! Please choose an option below: ");
+
+        //
         LocalDate today = LocalDate.now();
         LocalDate lastMonth = today.minusMonths(1);
         LocalDate lastYear = today.minusYears(1);
@@ -337,7 +351,6 @@ public class Screens {
                             }
                         }
                     }
-
 
                     System.out.print("\nEnd Date (yyyy-mm-dd, or press Enter to skip): ");
                     String cSearchEndDate = userInput.nextLine().trim();
