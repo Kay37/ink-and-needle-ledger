@@ -90,8 +90,8 @@ date|time|description|vendor|amount
 ## How I used AI
 
 I wrote the Java code myself. I used Claude (an AI assistant) as a coach: it explained
-error messages and Java ideas, asked questions to point me toward fixes, and reviewed code
-I had already written. With my instructor's OK, Claude also wrote this README and generated
+error messages and Java ideas, asked questions to point me toward fixes, reviewed code
+I had already written, and showed me similar examples when I was stuck on syntax. With my instructor's OK, Claude also wrote this README and generated
 the sample data in `transactions.csv`.
 
 ## Author
