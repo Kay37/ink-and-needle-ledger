@@ -25,6 +25,10 @@ public class Screens {
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
 
+    public static void printTable() {
+
+    }
+
     //! Method that will display the Home Screen when called / user chooses that action.
     //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
     //! information / run code it doesn't return anything.

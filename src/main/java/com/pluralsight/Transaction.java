@@ -79,7 +79,7 @@ public class Transaction {
         String formattedTime = this.getTime().format(timeFormatter);
         //? formattedString variable that takes the formatted current time and combines it with the other getters
         //? that the user will want to see for ledger entries when displaying them.
-        String formattedString = String.format("%d) %s|%s|%s|%s|%.2f", entryPosition, this.getDate(), formattedTime, this.getDescription(), this.getVendor(), this.getAmount());
+        String formattedString = String.format("%3d) %10s|%8s|%26s|%20s|%11.2f", entryPosition, this.getDate(), formattedTime, this.getDescription(), this.getVendor(), this.getAmount());
         return formattedString;
     }
 
