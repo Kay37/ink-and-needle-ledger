@@ -84,8 +84,13 @@ date|time|description|vendor|amount
 
 ## What I learned
 
-<!-- TODO: a few sentences in your own words, e.g. reading and writing files,
-     working with LocalDate for the reports, organizing code into classes. -->
+For this capstone, I learned a lot about organization and time management in coding.
+In past exercises, I didn't have a clear method for deciding where to put my time and
+effort. The Project Board helped a lot: I broke the work into clear tasks and moved each
+one through stages until it was done.
+
+I also learned to build an MVP (minimum viable product) first and polish it after.
+Get it working first, then make it pretty. That helped tons.
 
 ## How I used AI
 
