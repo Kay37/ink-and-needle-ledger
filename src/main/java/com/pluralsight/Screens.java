@@ -269,34 +269,31 @@ public class Screens {
             switch (reportsScreenChoice) {
                 case 1:
 //                    Month To Date
-                    int monthToDateCounter = 1;
+                    // * Create an ArrayList for us to feed to our printTable to do the printing from that method
+                    ArrayList<Transaction> monthToDateList = new ArrayList<>();
 
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
                         if (transactionsEntryDate.getMonthValue() == today.getMonthValue()
                                 && transactionsEntryDate.getYear() == today.getYear()) {
-                            System.out.println(transaction.transactionDisplayFormat(monthToDateCounter));
-                            monthToDateCounter++;
+                            monthToDateList.add(transaction);
                         }
                     }
-                    if (monthToDateCounter == 1) {
-                        System.out.println("No transactions for the month to date.");
-                    }
+                    // * Use printTable to display our monthToDateList in the way we want
+                    printTable(monthToDateList);
                     break;
                 case 2:
 //                    Previous Month
-                    int previousMonthCounter = 1;
+                    ArrayList<Transaction> previousMonthList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
                         if (transactionsEntryDate.getMonthValue() == (lastMonth.getMonthValue())
                                 && transactionsEntryDate.getYear() == lastMonth.getYear()) {
-                            System.out.println(transaction.transactionDisplayFormat(previousMonthCounter));
-                            previousMonthCounter++;
+                            previousMonthList.add(transaction);
                         }
                     }
-                    if (previousMonthCounter == 1) {
-                        System.out.println("No transactions for the previous month.");
-                    }
+
+                    printTable(previousMonthList);
                     break;
                 case 3:
 //                    Year To Date
