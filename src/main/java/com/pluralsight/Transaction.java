@@ -92,8 +92,20 @@ public class Transaction {
 
         // * a number before a placeholder indicates a width amount. a positive number indicates a width pushing it to
         // * the right. -26 would be to the left.
-        String formattedString = String.format("%3d) %10s|%8s|%-36s|%-20s|%,11.2f", entryPosition, this.getDate(), formattedTime, formattedDescription, formattedVendor, this.getAmount());
-        return formattedString;
+
+        // * On a second pass for this method, I'm adding color coding to our formattedString. To do this I'm splitting
+        // * up the formatted string into two sections - one all the way up until the amount's | and then everything
+        // * after. Then I'm checking if the amount being printed is a deposit or a payment and applying
+        // * green or red to the amount, depending on the type.
+        String formattedStringMinusAmount = String.format("%3d) %10s|%8s|%-36s|%-20s|", entryPosition, this.getDate(), formattedTime, formattedDescription, formattedVendor);
+        String formattedAmount = String.format("%,11.2f", this.getAmount());
+        String amountColor;
+        if (checkIfDeposit()) {
+            amountColor = ColorCoding.GREEN;
+        } else {
+            amountColor = ColorCoding.RED;
+        }
+        return String.format("%s%s%s%s", formattedStringMinusAmount, amountColor, formattedAmount, ColorCoding.RESET);
     }
 
     //!Building a method to easily format each line written into the transactions.csv file

@@ -38,7 +38,7 @@ public class Screens {
         //? Header printing
         System.out.printf("%3s  %-10s|%-8s|%-36s|%-20s|%11s%n", "#", "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
         //? Header separation / divider
-        System.out.println("─".repeat(94));
+        System.out.println(ColorCoding.DIM + "─" + ColorCoding.RESET.repeat(94));
         int tablePosition = 1;
         double footerMoneyIn = 0;
         double footerMoneyOut = 0;
@@ -53,9 +53,9 @@ public class Screens {
             System.out.println(transaction.transactionDisplayFormat(tablePosition));
             tablePosition++;
         }
-        footerNet =  footerMoneyIn - footerMoneyOut;
-        System.out.println("─".repeat(94));
-        System.out.printf("%d entries |Money In: $%,.2f|Money Out: $%,.2f|Net: $%,.2f%n", (tablePosition -1), footerMoneyIn, footerMoneyOut, footerNet);
+        footerNet = footerMoneyIn - footerMoneyOut;
+        System.out.println(ColorCoding.DIM + "─" + ColorCoding.RESET.repeat(94));
+        System.out.printf("%d entries |Money In: $%,.2f|Money Out: $%,.2f|Net: $%,.2f%n", (tablePosition - 1), footerMoneyIn, footerMoneyOut, footerNet);
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
@@ -479,7 +479,7 @@ public class Screens {
                                 // ? If it does NOT parse correctly, they input a wrong format, had a typo, or put
                                 // ? a letter or something other. Will continue to prompt them until they provide
                                 // ? a valid answer.
-                            }  catch (NumberFormatException e) {
+                            } catch (NumberFormatException e) {
                                 System.out.print("Please enter a valid amount in a xx.xx format (e.g. 59.99): ");
                                 cSearchAmount = userInput.nextLine().trim();
                             }
@@ -617,12 +617,12 @@ public class Screens {
                     printTable(customSearchList);
                     break;
 
-                    // ? If the user selects 0, the loop for the reportsScreen will end.
+                // ? If the user selects 0, the loop for the reportsScreen will end.
                 case 0:
                     reportsScreenRunning = false;
                     break;
 
-                    // ? If the user does not select from the valid options, it will prompt them to choose a valid
+                // ? If the user does not select from the valid options, it will prompt them to choose a valid
                 // ? choice
                 default:
                     System.out.println("Please enter a valid option. Refer to the numbers next to the options.");
