@@ -25,8 +25,12 @@ public class Screens {
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
 
+    //! This is a method to display transactions / entries / reports & searches in a nicely arranged
+    //! table. This cuts down on sout code in multiple switch cases & adds fixed widths to columns
+    //! for clean, functional readability when displaying information to the user.
     public static void printTable(ArrayList<Transaction> transactionsToShow) {
-        //? Code block for my table header (if not empty)
+        //! Code block for my table header (if not empty)
+
         if (transactionsToShow.isEmpty()) {
             System.out.println("No transactions found.");
             return;
@@ -36,11 +40,22 @@ public class Screens {
         //? Header separation / divider
         System.out.println("─".repeat(94));
         int tablePosition = 1;
+        double footerMoneyIn = 0;
+        double footerMoneyOut = 0;
+        double footerNet = 0;
         //? Loop to then format and print each row / line in the ArrayList after the header.
         for (Transaction transaction : transactionsToShow) {
+            if (transaction.checkIfDeposit()) {
+                footerMoneyIn += transaction.getAmount();
+            } else {
+                footerMoneyOut += Math.abs(transaction.getAmount());
+            }
             System.out.println(transaction.transactionDisplayFormat(tablePosition));
             tablePosition++;
         }
+        footerNet =  footerMoneyIn - footerMoneyOut;
+        System.out.println("─".repeat(94));
+        System.out.printf("%d entries |Money In: $%,.2f|Money Out: $%,.2f|Net: $%,.2f%n", (tablePosition -1), footerMoneyIn, footerMoneyOut, footerNet);
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
