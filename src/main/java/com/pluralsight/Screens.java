@@ -38,7 +38,7 @@ public class Screens {
         //? Header printing
         System.out.printf("%3s  %-10s|%-8s|%-36s|%-20s|%11s%n", "#", "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
         //? Header separation / divider
-        System.out.println(ColorCoding.DIM + "─" + ColorCoding.RESET.repeat(94));
+        System.out.println(ColorCoding.DIM + "─".repeat(94) + ColorCoding.RESET);
         int tablePosition = 1;
         double footerMoneyIn = 0;
         double footerMoneyOut = 0;
@@ -54,8 +54,19 @@ public class Screens {
             tablePosition++;
         }
         footerNet = footerMoneyIn - footerMoneyOut;
-        System.out.println(ColorCoding.DIM + "─" + ColorCoding.RESET.repeat(94));
-        System.out.printf("%d entries |Money In: $%,.2f|Money Out: $%,.2f|Net: $%,.2f%n", (tablePosition - 1), footerMoneyIn, footerMoneyOut, footerNet);
+
+        String footerNetColor;
+        String amountSign;
+        if (footerNet >= 0) {
+            footerNetColor = ColorCoding.GREEN;
+            amountSign = "";
+        } else {
+            footerNetColor = ColorCoding.RED;
+            amountSign = "-";
+        }
+
+        System.out.println(ColorCoding.DIM + "─".repeat(94) + ColorCoding.RESET);
+        System.out.printf("%d entries |Money In: $%,.2f|Money Out: $%,.2f|Net: %s%s$%,.2f%s%n", (tablePosition - 1), footerMoneyIn, footerMoneyOut, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
