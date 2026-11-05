@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Comparator;
 
+import static com.pluralsight.ColorCoding.PIPE;
+
 public class Screens {
 
     //! Helper method to display welcome banner
@@ -36,9 +38,9 @@ public class Screens {
             return;
         }
         //? Header printing
-        System.out.printf("%3s  %-10s|%-8s|%-36s|%-20s|%11s%n", "#", "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
+        System.out.printf("%3s  %-10s%s%-8s%s%-36s%s%-20s%s%11s%n", "#", "DATE", PIPE, "TIME", PIPE, "DESCRIPTION", PIPE, "VENDOR", PIPE, "AMOUNT");
         //? Header separation / divider
-        System.out.println(ColorCoding.DIM + "─".repeat(94) + ColorCoding.RESET);
+        System.out.println(ColorCoding.GRAY + "─".repeat(94) + ColorCoding.RESET);
         int tablePosition = 1;
         double footerMoneyIn = 0;
         double footerMoneyOut = 0;
@@ -65,8 +67,8 @@ public class Screens {
             amountSign = "-";
         }
 
-        System.out.println(ColorCoding.DIM + "─".repeat(94) + ColorCoding.RESET);
-        System.out.printf("%d entries |Money In: $%,.2f|Money Out: $%,.2f|Net: %s%s$%,.2f%s%n", (tablePosition - 1), footerMoneyIn, footerMoneyOut, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
+        System.out.println(ColorCoding.GRAY + "─".repeat(94) + ColorCoding.RESET);
+        System.out.printf("%d entries %s Money In: $%,.2f %s Money Out: $%,.2f %s Net: %s%s$%,.2f%s%n", (tablePosition - 1), PIPE, footerMoneyIn, PIPE, footerMoneyOut, PIPE, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.

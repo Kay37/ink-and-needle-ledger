@@ -10,8 +10,10 @@ public class ColorCoding {
     public static final String RED = "\u001B[31m";
     // ? I intend to use the YELLOW constant for warning messages
     public static final String YELLOW = "\u001B[33m";
-    // ? I intend to use the DIM constant for table structure
+    // ? I intend to use the GRAY constant for table structure
     // ? So dividers / columns / ~ ~ ~ lines will be with a dimmer color
     // ? so as not to draw attention away from the information
-    public static final String DIM = "\u001B[2m";
+    public static final String GRAY = "\u001B[90m";
+    // ? I intend to use the PIPE constant for dividers between data / information. Pipe is "|" + GRAY.
+    public static final String PIPE = ColorCoding.GRAY + "|" + ColorCoding.RESET;
 }

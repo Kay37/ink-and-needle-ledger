@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import static com.pluralsight.ColorCoding.PIPE;
+
 public class Transaction {
 
     private LocalDate date;
@@ -97,7 +99,7 @@ public class Transaction {
         // * up the formatted string into two sections - one all the way up until the amount's | and then everything
         // * after. Then I'm checking if the amount being printed is a deposit or a payment and applying
         // * green or red to the amount, depending on the type.
-        String formattedStringMinusAmount = String.format("%3d) %10s|%8s|%-36s|%-20s|", entryPosition, this.getDate(), formattedTime, formattedDescription, formattedVendor);
+        String formattedStringMinusAmount = String.format("%3d) %10s%s%8s%s%-36s%s%-20s%s", entryPosition, this.getDate(), PIPE, formattedTime, PIPE, formattedDescription, PIPE, formattedVendor, PIPE);
         String formattedAmount = String.format("%,11.2f", this.getAmount());
         String amountColor;
         if (checkIfDeposit()) {
