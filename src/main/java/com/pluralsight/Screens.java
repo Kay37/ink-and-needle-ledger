@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Comparator;
 
-import static java.lang.String.format;
-
 public class Screens {
 
     //! Helper method to display welcome banner
@@ -28,17 +26,17 @@ public class Screens {
     }
 
     public static void printTable(ArrayList<Transaction> transactionsToShow) {
-        //* Code block for my table header (if not empty)
+        //? Code block for my table header (if not empty)
         if (transactionsToShow.isEmpty()) {
             System.out.println("No transactions found.");
             return;
         }
-        //*Header printing
+        //? Header printing
         System.out.printf("%3s  %-10s|%-8s|%-36s|%-20s|%11s%n", "#", "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
-        //* Header separation / divider
+        //? Header separation / divider
         System.out.println("─".repeat(94));
         int tablePosition = 1;
-        //* Loop to then format and print each row / line in the ArrayList after the header.
+        //? Loop to then format and print each row / line in the ArrayList after the header.
         for (Transaction transaction : transactionsToShow) {
             System.out.println(transaction.transactionDisplayFormat(tablePosition));
             tablePosition++;
@@ -269,7 +267,7 @@ public class Screens {
             switch (reportsScreenChoice) {
                 case 1:
 //                    Month To Date
-                    // * Create an ArrayList for us to feed to our printTable to do the printing from that method
+                    // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
                     ArrayList<Transaction> monthToDateList = new ArrayList<>();
 
                     for (Transaction transaction : newestFirstTransactions) {
@@ -279,11 +277,13 @@ public class Screens {
                             monthToDateList.add(transaction);
                         }
                     }
-                    // * Use printTable to display our monthToDateList in the way we want
+                    // ? Use printTable to display our ArrayList in the way we want
                     printTable(monthToDateList);
                     break;
                 case 2:
+
 //                    Previous Month
+                    // ? Creating an ArrayList for us to feed to our printTable method.
                     ArrayList<Transaction> previousMonthList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
@@ -292,36 +292,35 @@ public class Screens {
                             previousMonthList.add(transaction);
                         }
                     }
-
+                    // ? Use printTable to display our ArrayList in the way we want
                     printTable(previousMonthList);
                     break;
                 case 3:
+
 //                    Year To Date
-                    int yearToDateCounter = 1;
+                    // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
+                    ArrayList<Transaction> yearToDateList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
                         if (transactionsEntryDate.getYear() == today.getYear()) {
-                            System.out.println(transaction.transactionDisplayFormat(yearToDateCounter));
-                            yearToDateCounter++;
+                            yearToDateList.add(transaction);
                         }
                     }
-                    if (yearToDateCounter == 1) {
-                        System.out.println("No transactions for the year to date.");
-                    }
+                    // ? Use printTable to display our ArrayList in the way we want
+                    printTable(yearToDateList);
                     break;
                 case 4:
 //                    Previous Year
-                    int previousYearCounter = 1;
+                    // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
+                    ArrayList<Transaction> previousYearList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
                         if (transactionsEntryDate.getYear() == lastYear.getYear()) {
-                            System.out.println(transaction.transactionDisplayFormat(previousYearCounter));
-                            previousYearCounter++;
+                            previousYearList.add(transaction);
                         }
                     }
-                    if (previousYearCounter == 1) {
-                        System.out.println("No transactions for the previous year.");
-                    }
+                    // ? Use printTable to display our ArrayList in the way we want
+                    printTable(previousYearList);
                     break;
                 case 5:
 //                    Search By Vendor
@@ -331,31 +330,47 @@ public class Screens {
                         System.out.print("Please enter a vendor name: ");
                         vendorName = userInput.nextLine().trim().toLowerCase();
                     }
-                    int searchByVendorCounter = 1;
+                    // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
+                    ArrayList<Transaction> searchByVendorList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         if (transaction.getVendor().toLowerCase().contains(vendorName)) {
-                            System.out.println(transaction.transactionDisplayFormat(searchByVendorCounter));
-                            searchByVendorCounter++;
+                            searchByVendorList.add(transaction);
                         }
                     }
-                    if (searchByVendorCounter == 1) {
-                        System.out.println("No transactions for that vendor name.");
-                    }
+                    // ? Use printTable to display our ArrayList in the way we want
+                    printTable(searchByVendorList);
                     break;
                 case 6:
 //                    Custom Search
                     System.out.println("Please provide the following information for a custom search: ");
+
+                    // ? Printing to the user to provide a start date (format example given) or press Enter to skip
+                    // ? Enter to skip leaves that search filter blank in their end custom search.
                     System.out.print("\nStart Date (yyyy-mm-dd, or press Enter to skip): ");
+
+                    // ? Storing their answer in a String, and removing leading / trailing spaces.
                     String cSearchStartDate = userInput.nextLine().trim();
+
+                    // ? Creating a boolean for input validation.
                     boolean validStartDate = false;
 
+                    // ? While boolean validStartDate is false (false to start) - run the below code:
+                    // ? if their answer is empty, we will store this as them pressing Enter to skip and thus their
+                    // ? answer is a valid start date / option.
                     while (!validStartDate) {
                         if (cSearchStartDate.isEmpty()) {
                             validStartDate = true;
+
+                            // ? If their answer is NOT empty, try to LocalDate parse their answer and if it runs
+                            // ? successfully then they provided a valid date format. Then mark the boolean true
                         } else {
                             try {
                                 LocalDate.parse(cSearchStartDate);
                                 validStartDate = true;
+
+                                // ? For the catch portion of this try/catch, if their answer is not empty
+                                // ? but it does not parse correctly, then they entered an invalid date or typo.
+                                // ? Prompting them to retry or press enter to skip.
                             } catch (DateTimeParseException e) {
                                 System.out.print("Please enter a valid date (yyyy-mm-dd) or press Enter to skip: ");
                                 cSearchStartDate = userInput.nextLine().trim();
@@ -363,6 +378,7 @@ public class Screens {
                         }
                     }
 
+                    // ? For end date explanation, refer to start date comments.
                     System.out.print("\nEnd Date (yyyy-mm-dd, or press Enter to skip): ");
                     String cSearchEndDate = userInput.nextLine().trim();
                     boolean validEndDate = false;
@@ -381,14 +397,31 @@ public class Screens {
                         }
                     }
 
+                    // ? Asking the user for a description for their custom search, and storing the answer.
                     System.out.print("\nDescription (or press Enter to skip): ");
+
+                    // ? converting their input to lowercase, so when the transaction's description getter returns
+                    // ? in lower case we don't have to worry about case mismatch.
                     String cSearchDescription = userInput.nextLine().trim().toLowerCase();
 
+                    // ? Asking the user for a vendor for their custom search, and storing the answer.
                     System.out.print("\nVendor (or press Enter to skip): ");
+
+                    // ? converting their input to lowercase, so when the transaction's vendor getter returns
+                    // ? in lower case we don't have to worry about case mismatch.
                     String cSearchVendor = userInput.nextLine().trim().toLowerCase();
 
+                    // ? Asking the user if they are searching for a deposit or a payment, or skipping this filter.
+                    // ? Storing their answer in a variable, trimming it, and converting it to lower case so that
+                    // ? if they type 'deposit' instead of 'Deposit' we do not have issues.
                     System.out.print("\nDeposit or Payment? (or press Enter to skip): ");
                     String cSearchEntryType = userInput.nextLine().trim().toLowerCase();
+
+                    // ? While their answer for deposit or payment does not equal "deposit" and does not equal "payment"
+                    // ? and is not empty, we can infer that they have not pressed enter to skip, and have not answered
+                    // ? with either of the two options (maybe a typo, maybe a number, maybe intentional trying to
+                    // ? produce an error. In this case, we will re prompt them until they give us one of the acceptable
+                    // ? formats.
                     while (!cSearchEntryType.equals("deposit") && !cSearchEntryType.equals("payment") && !cSearchEntryType.isEmpty()) {
                         System.out.print("Please answer 'Deposit' or 'Payment' letter for letter:");
                         cSearchEntryType = userInput.nextLine().trim().toLowerCase();
@@ -396,15 +429,25 @@ public class Screens {
 
                     System.out.print("\nAmount (e.g. 50.00 or press Enter to skip): $");
                     String cSearchAmount = userInput.nextLine().trim();
+
+                    // ? This is the same idea as the start / end date boolean while loop
                     boolean validSearchAmount = false;
 
+                    // ? While validSearchAmount is false (false to start), check if their answer is empty.
+                    // ? If empty, we are accepting that as a valid input (Enter to skip)
                     while (!validSearchAmount) {
                         if (cSearchAmount.isEmpty()) {
                             validSearchAmount = true;
+
+                            // ? Else, if their input is NOT empty, try to parse their answer for a double.
+                            // ? If it parses correctly, their answer is acceptable and the while loop will end
                         } else {
                             try {
                                 Double.parseDouble(cSearchAmount);
                                 validSearchAmount = true;
+                                // ? If it does NOT parse correctly, they input a wrong format, had a typo, or put
+                                // ? a letter or something other. Will continue to prompt them until they provide
+                                // ? a valid answer.
                             }  catch (NumberFormatException e) {
                                 System.out.print("Please enter a valid amount in a xx.xx format (e.g. 59.99): ");
                                 cSearchAmount = userInput.nextLine().trim();
@@ -413,66 +456,149 @@ public class Screens {
                     }
 
                     int cSearchCounter = 1;
+
+                    // ? Run this loop for every transaction within our newestFirstTransactions ArrayList.
                     for (Transaction transaction : newestFirstTransactions) {
+
+                        // ? For every transaction, boolean isMatch is only true at the start of each loop / pass
+                        // ? isMatch is the flag for pass/fail from the bouncers (the if statement checks)
+                        // ? that will kick out transactions that do not pass the check (set isMatch = false)
                         boolean isMatch = true;
+
                         //Description
+
+                        // ? If their description input is NOT empty, run the nested if statement.
+                        // ? If the description input IS empty, we will not run the nested if statement that decides
+                        // ? whether that transaction is included in the search. That does not mean the transaction will
+                        // ? be included in the result - it still has to get past the other checks.
                         if (!cSearchDescription.isEmpty())
+
+                            // ? if the transaction's description (in lower case) does NOT contain the user's
+                            // ? description search, isMatch = false.
                             if (!transaction.getDescription().toLowerCase().contains(cSearchDescription)) {
+
+                                // ? isMatch = false means the bouncer is kicking this transaction out - it is not a
+                                // ? match to the user's description input.
                                 isMatch = false;
                             }
+
                         //Vendor
+
+                        // ? If the user's search input for the vendor is NOT empty, AND the transaction's vendor
+                        // ? (in lower case) does NOT contain the user's vendor search, then isMatch = false.
                         if (!cSearchVendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(cSearchVendor)) {
+
+                            // ? if isMatch = false, it does not match the user's search input and the transaction will
+                            // ? not be included in the search result
                             isMatch = false;
                         }
 
                         //Deposit?
+
+                        // ? If the user's entry type search (that we converted to lower case earlier) equals "deposit"
+                        // ? (they want deposits) then will run the nested if statement.
                         if (cSearchEntryType.equals("deposit")) {
+
+                            // ? If the transaction, running the checkIfDeposit method, (is the amount greater than 0)
+                            // ? returns false then isMatch = false
+                            // ? In layman's terms, if the transaction being checked in this loop is not a deposit
+                            // ? (negative number) then the bouncer is kicking it out because the user wants deposits,
+                            // ? not payments.
                             if (!transaction.checkIfDeposit()) {
+
+                                // ? if isMatch = false, it does not match the user's search input and the transaction will
+                                // ? not be included in the search result
                                 isMatch = false;
                             }
                         }
+
                         //Payment?
+
+                        // ? If the user's entry type search (that we converted to lower case earlier) equals "payment"
+                        // ? (they want payments) then will run the nested if statement.
                         if (cSearchEntryType.equals("payment")) {
+
+                            // ? If the transaction, running the checkIfDeposit method, (is the amount greater than 0)
+                            // ? returns TRUE (is greater than 0) then isMatch = false;
+                            // ? so in layman's terms, if the transaction being checked in this loop
+                            // ? is a deposit (positive number) then the bouncer is kicking it out because the user
+                            // ? wants payments, not deposits.
                             if (transaction.checkIfDeposit()) {
+
+                                // ? if isMatch = false, it does not match the user's search input and the transaction will
+                                // ? not be included in the search result
                                 isMatch = false;
                             }
                         }
 
 //                        Start Date:
+
+                        // ? if the user's start date input is NOT empty, then try and LocalDate parse their answer
+                        // ? and store it in LocalDate variable startDate.
                         if (!cSearchStartDate.isEmpty()) {
                             LocalDate startDate = LocalDate.parse(cSearchStartDate);
+
+                            // ? After parsing, if the current transaction's date is before the start date,
+                            // ? isMatch = false which means this transaction will not be included in the search
+                            // ? result.
                             if (transaction.getDate().isBefore(startDate)) {
                                 isMatch = false;
                             }
                         }
+
 //                        End Date:
+
+                        // ? Same idea for the end date. If the user's end date input is NOT empty, then try and
+                        // ? LocalDate parse their answer and store it in LocalDate variable endDate.
                         if (!cSearchEndDate.isEmpty()) {
                             LocalDate endDate = LocalDate.parse(cSearchEndDate);
+
+                            // ? After parsing, if the current transaction's date is after the end date, isMatch = false
+                            // ? which means this transaction will not be included in the search result.
                             if (transaction.getDate().isAfter(endDate)) {
                                 isMatch = false;
                             }
                         }
+
 //                        Amount:
+
+                        // ? If the user's search amount input is NOT empty, then try and parseDouble their answer
+                        // ? and store it in searchAmount variable as a double.
                         if (!cSearchAmount.isEmpty()) {
                             double searchAmount = Double.parseDouble(cSearchAmount);
+
+                            // ? After parsing, if the current transaction's amount (Math.abs turns the value to positive)
+                            // ? is not equal to the user's input, then isMatch = false. This means this transaction
+                            // ? will not be included in the search result.
                             if (Math.abs(searchAmount) != (Math.abs(transaction.getAmount()))) {
                                 isMatch = false;
                             }
                         }
 
+                        // ? After running the transactions through all checks, find the ones that returned isMatch = true
+                        // ? For all transactions that are a match, display them using the TransactionDisplayFormat
+                        // ? method with an integer for the line count / transaction position in the list.
                         if (isMatch) {
                             System.out.println(transaction.transactionDisplayFormat(cSearchCounter));
                             cSearchCounter++;
                         }
 
                     }
+
+                    // ? If the integer for the line count / transaction position in the list never increased from the
+                    // ? start position of 1, that means the isMatch if statement never ran to increase it's value.
+                    // ? So therefore, no transactions matched the user's custom search.
                     if (cSearchCounter == 1) {
                         System.out.println("No results for that custom search. ");
                     }
                     break;
+
+                    // ? If the user selects 0, the loop for the reportsScreen will end.
                 case 0:
                     reportsScreenRunning = false;
                     break;
+                    // ? If the user does not select from the valid options, it will prompt them to choose a valid
+                // ? choice
                 default:
                     System.out.println("Please enter a valid option. Refer to the numbers next to the options.");
                     break;
