@@ -233,7 +233,7 @@ public class Screens {
 
     }
 
-    //!Same deal as the ledgerScreen method. reportsScreen is nested within the ledgerScreen.
+    //! Same deal as the ledgerScreen method. reportsScreen is nested within the ledgerScreen.
     //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
     //! information / run code it doesn't return anything.
     public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions) {
@@ -267,6 +267,7 @@ public class Screens {
             switch (reportsScreenChoice) {
                 case 1:
 //                    Month To Date
+
                     // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
                     ArrayList<Transaction> monthToDateList = new ArrayList<>();
 
@@ -283,8 +284,10 @@ public class Screens {
                 case 2:
 
 //                    Previous Month
+
                     // ? Creating an ArrayList for us to feed to our printTable method.
                     ArrayList<Transaction> previousMonthList = new ArrayList<>();
+
                     for (Transaction transaction : newestFirstTransactions) {
                         LocalDate transactionsEntryDate = transaction.getDate();
                         if (transactionsEntryDate.getMonthValue() == (lastMonth.getMonthValue())
@@ -292,12 +295,15 @@ public class Screens {
                             previousMonthList.add(transaction);
                         }
                     }
+
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(previousMonthList);
                     break;
+
                 case 3:
 
 //                    Year To Date
+
                     // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
                     ArrayList<Transaction> yearToDateList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
@@ -306,11 +312,14 @@ public class Screens {
                             yearToDateList.add(transaction);
                         }
                     }
+
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(yearToDateList);
                     break;
+
                 case 4:
 //                    Previous Year
+
                     // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
                     ArrayList<Transaction> previousYearList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
@@ -319,17 +328,20 @@ public class Screens {
                             previousYearList.add(transaction);
                         }
                     }
+
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(previousYearList);
                     break;
                 case 5:
 //                    Search By Vendor
+
                     System.out.print("\nEnter the vendor name you would like to search by: ");
                     String vendorName = userInput.nextLine().trim().toLowerCase();
                     while (vendorName.isEmpty()) {
                         System.out.print("Please enter a vendor name: ");
                         vendorName = userInput.nextLine().trim().toLowerCase();
                     }
+
                     // ? Create an ArrayList for us to feed to our printTable to do the printing from that method
                     ArrayList<Transaction> searchByVendorList = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
@@ -337,11 +349,14 @@ public class Screens {
                             searchByVendorList.add(transaction);
                         }
                     }
+
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(searchByVendorList);
                     break;
+
                 case 6:
 //                    Custom Search
+
                     System.out.println("Please provide the following information for a custom search: ");
 
                     // ? Printing to the user to provide a start date (format example given) or press Enter to skip
@@ -445,6 +460,7 @@ public class Screens {
                             try {
                                 Double.parseDouble(cSearchAmount);
                                 validSearchAmount = true;
+
                                 // ? If it does NOT parse correctly, they input a wrong format, had a typo, or put
                                 // ? a letter or something other. Will continue to prompt them until they provide
                                 // ? a valid answer.
@@ -455,7 +471,7 @@ public class Screens {
                         }
                     }
 
-                    int cSearchCounter = 1;
+                    ArrayList<Transaction> customSearchList = new ArrayList<>();
 
                     // ? Run this loop for every transaction within our newestFirstTransactions ArrayList.
                     for (Transaction transaction : newestFirstTransactions) {
@@ -576,27 +592,21 @@ public class Screens {
                         }
 
                         // ? After running the transactions through all checks, find the ones that returned isMatch = true
-                        // ? For all transactions that are a match, display them using the TransactionDisplayFormat
-                        // ? method with an integer for the line count / transaction position in the list.
+                        // ? For all transactions that are a match, add them to the empty customSearchList ArrayList.
                         if (isMatch) {
-                            System.out.println(transaction.transactionDisplayFormat(cSearchCounter));
-                            cSearchCounter++;
+                            customSearchList.add(transaction);
                         }
 
                     }
 
-                    // ? If the integer for the line count / transaction position in the list never increased from the
-                    // ? start position of 1, that means the isMatch if statement never ran to increase it's value.
-                    // ? So therefore, no transactions matched the user's custom search.
-                    if (cSearchCounter == 1) {
-                        System.out.println("No results for that custom search. ");
-                    }
+                    printTable(customSearchList);
                     break;
 
                     // ? If the user selects 0, the loop for the reportsScreen will end.
                 case 0:
                     reportsScreenRunning = false;
                     break;
+
                     // ? If the user does not select from the valid options, it will prompt them to choose a valid
                 // ? choice
                 default:
