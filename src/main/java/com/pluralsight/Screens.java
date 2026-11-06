@@ -327,7 +327,7 @@ public class Screens {
                     Transaction newDeposit = new Transaction(depositDate, depositTime, depositDescription, depositVendor, depositAmount);
                     inkAndNeedleTransactions.add(newDeposit);
                     TransactionManager.saveTransaction(newDeposit, fileName);
-                    System.out.printf("\nA new deposit amount of $%.2f has been saved.%n", depositAmount);
+                    printHeader(PLAIN_RIBBON, "A new deposit has been saved.", "Amount: " + depositAmount);
                     break;
                 case "p":
                     System.out.print("\nPayment amount (e.g. 120.00): $");
@@ -369,7 +369,7 @@ public class Screens {
                     Transaction newPayment = new Transaction(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount);
                     inkAndNeedleTransactions.add(newPayment);
                     TransactionManager.saveTransaction(newPayment, fileName);
-                    System.out.printf("\nA new payment amount of $%.2f has been saved.%n", (paymentAmount * -1));
+                    printHeader(PLAIN_RIBBON, "A new payment has been saved.", "Amount: -$" + paymentAmount * -1);
                     break;
                 case "l":
                     //* Call to ledgerScreen method for nested screen.
