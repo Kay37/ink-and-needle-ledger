@@ -86,6 +86,7 @@ public class Screens {
             "└──  └──  └─┘  ──┘  └──  └─╯"
     };
 
+    //! helper method to display our exit sign
     public static void exitSign() {
         System.out.println(ColorCoding.MAGENTA + "╭" + "─".repeat(36) + "╮" + ColorCoding.RESET);
         System.out.println(ColorCoding.MAGENTA + "│" + " ".repeat(36) + "│" + ColorCoding.RESET);
