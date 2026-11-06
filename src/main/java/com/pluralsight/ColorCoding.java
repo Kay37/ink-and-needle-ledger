@@ -16,4 +16,7 @@ public class ColorCoding {
     public static final String GRAY = "\u001B[90m";
     // ? I intend to use the PIPE constant for dividers between data / information. Pipe is "|" + GRAY.
     public static final String PIPE = ColorCoding.GRAY + "|" + ColorCoding.RESET;
+    // ? cyan for welcome banner design color
+    public static final String CYAN = "\u001B[36m";
+
 }
