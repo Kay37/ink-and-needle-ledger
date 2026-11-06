@@ -93,7 +93,7 @@ public class Transaction {
         }
 
         // * a number before a placeholder indicates a width amount. a positive number indicates a width pushing it to
-        // * the right. -26 would be to the left.
+        // * the right. -36 would be to the left.
 
         // * On a second pass for this method, I'm adding color coding to our formattedString. To do this I'm splitting
         // * up the formatted string into two sections - one all the way up until the amount's | and then everything
