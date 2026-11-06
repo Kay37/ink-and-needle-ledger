@@ -73,7 +73,7 @@ public class Screens {
             footerEntryWord = "entries";
         }
         System.out.println(ColorCoding.GRAY + "─".repeat(94) + ColorCoding.RESET);
-        System.out.printf("%d %s %s Money In: $%,.2f %s Money Out: $%,.2f %s Net: %s%s$%,.2f%s%n", transactionsToShow.size(), footerEntryWord, PIPE, footerMoneyIn, PIPE, footerMoneyOut, PIPE, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
+        System.out.printf("%d %s %s Money In: $%,.2f %s Money Out: $%,.2f %s Net: %s%s$%,.2f%s%n%n", transactionsToShow.size(), footerEntryWord, PIPE, footerMoneyIn, PIPE, footerMoneyOut, PIPE, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
