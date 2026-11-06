@@ -91,7 +91,10 @@ public class Screens {
         int designNumber = random.nextInt(WELCOME_BANNER_DESIGNS.length);
         System.out.println(WELCOME_BANNER_DESIGNS[designNumber]);
         System.out.printf("""
-                ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+                ╔════════════════════════════════════════════╗
+                ║          tattoo studio  ·  ledger          ║
+                ╚════════════════════════════════════════════╝
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 Welcome back! Today's date and time: %s
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
