@@ -41,7 +41,7 @@ public class TransactionManager {
             //? Catch portion of the try & catch in case main argument / code we want to run fails.
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Error reading file: " + fileName);
+            Screens.printWarning("Error reading file: " + fileName);
         }
         //? Returning the ArrayList to wherever it was called from
         return transactionsList;
@@ -60,7 +60,7 @@ public class TransactionManager {
             //? Catching error / exception if it cannot be written to the file.
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Error writing new transaction to file: " + fileName);
+            Screens.printWarning("Error writing new transaction to file: " + fileName);
         }
     }
 

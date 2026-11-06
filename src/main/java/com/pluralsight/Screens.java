@@ -99,6 +99,15 @@ public class Screens {
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
     }
 
+    //! Helper method for warning messages / prompting user to retry their input
+    public static void printWarning(String message) {
+        System.out.println(ColorCoding.HIGHLIGHT + " ! " + message + " " + ColorCoding.RESET);
+    }
+
+    public static void printInputWarning(String message) {
+        System.out.print(ColorCoding.HIGHLIGHT + " ! " + message + " " + ColorCoding.RESET);
+    }
+
     //! This is a method to display transactions / entries / reports & searches in a nicely arranged
     //! table. This cuts down on sout code in multiple switch cases & adds fixed widths to columns
     //! for clean, functional readability when displaying information to the user.
@@ -106,7 +115,7 @@ public class Screens {
         //! Code block for my table header (if not empty)
 
         if (transactionsToShow.isEmpty()) {
-            System.out.println("No transactions found.");
+            printWarning("No transactions found.");
             return;
         }
         //? Header printing
@@ -213,19 +222,20 @@ public class Screens {
                     System.out.print("\nDeposit amount (e.g. 105.97): $");
                     while (!userInput.hasNextDouble()) {
                         userInput.nextLine();
-                        System.out.print("Please enter a number: $");
+                        printInputWarning("Please enter a number: $");
                     }
                     double depositAmount = userInput.nextDouble();
                     userInput.nextLine();
                     //? A while loop for if the user enters a negative number. Will persist until they enter a positive #
                     while (depositAmount <= 0) {
-                        System.out.print("\nPlease enter a positive amount (e.g. 105.97): $");
+                        System.out.println();
+                        printInputWarning("Please enter a positive amount (e.g. 105.97): $");
                         //? Nested while loop within our previous while loop. This one checks to see if the user input
                         //? was in fact a Double like we want. If not (like a letter), it will refuse it and ask again.
                         //? Does this until the userInput hasNextDouble.
                         while (!userInput.hasNextDouble()) {
                             userInput.nextLine();
-                            System.out.print("Please enter a number: $");
+                            printInputWarning("Please enter a number: $");
                         }
                         depositAmount = userInput.nextDouble();
                         userInput.nextLine();
@@ -234,7 +244,7 @@ public class Screens {
                     System.out.print("\nWho is the deposit from?: ");
                     String depositVendor = userInput.nextLine().trim();
                     while (depositVendor.isEmpty()) {
-                        System.out.print("Please designate who the deposit is from: ");
+                        printInputWarning("Please designate who the deposit is from:");
                         depositVendor = userInput.nextLine().trim();
                     }
 
@@ -255,25 +265,26 @@ public class Screens {
                     System.out.print("\nPayment amount (e.g. 120.00): $");
                     while (!userInput.hasNextDouble()) {
                         userInput.nextLine();
-                        System.out.print("Please enter a number: $");
+                        printInputWarning("Please enter a number: $");
                     }
                     double paymentAmount = userInput.nextDouble();
                     userInput.nextLine();
 
                     while (paymentAmount <= 0) {
-                        System.out.print("\nPlease enter a positive amount (e.g. 120.00): $");
+                        System.out.println();
+                        printInputWarning("Please enter a positive amount (e.g. 120.00): $");
                         while (!userInput.hasNextDouble()) {
                             userInput.nextLine();
-                            System.out.print("Please enter a number: $");
+                            printInputWarning("Please enter a number: $");
                         }
                         paymentAmount = userInput.nextDouble();
                         userInput.nextLine();
                     }
 
-                    System.out.print("\nWho is the payment to?: ");
+                    System.out.print("\nWho is the payment to?:");
                     String paymentVendor = userInput.nextLine().trim();
                     while (paymentVendor.isEmpty()) {
-                        System.out.print("Please enter a recipient for the payment: ");
+                        printInputWarning("Please enter a recipient for the payment: ");
                         paymentVendor = userInput.nextLine().trim();
                     }
 
@@ -302,7 +313,7 @@ public class Screens {
                     break;
                 default:
                     //* Default option if the user inputs something other than what we have cases for.
-                    System.out.println("Please enter a valid option. Refer to the letters next to the options.");
+                    printWarning("Please enter a valid option. Refer to the letters next to the options.");
                     break;
             }
             homeScreenIteration++;
@@ -367,7 +378,7 @@ public class Screens {
                     ledgerScreenRunning = false;
                     break;
                 default:
-                    System.out.println("Please enter a valid option. Refer to the letters next to the options.");
+                    printWarning("Please enter a valid option. Refer to the letters next to the options.");
                     break;
             }
             ledgerScreenIteration++;
@@ -402,7 +413,7 @@ public class Screens {
                     """);
             while (!userInput.hasNextInt()) {
                 userInput.nextLine();
-                System.out.println("Please enter a valid choice/number. Refer to the numbered options for your choices.");
+                printWarning("Please enter a valid choice/number. Refer to the numbered options for your choices.");
             }
             int reportsScreenChoice = userInput.nextInt();
             userInput.nextLine();
@@ -477,10 +488,10 @@ public class Screens {
                 case 5:
 //                    Search By Vendor
 
-                    System.out.print("\nEnter the vendor name you would like to search by: ");
+                    System.out.print("\nEnter the vendor name you would like to search by:");
                     String vendorName = userInput.nextLine().trim().toLowerCase();
                     while (vendorName.isEmpty()) {
-                        System.out.print("Please enter a vendor name: ");
+                        printInputWarning("Please enter a vendor name: ");
                         vendorName = userInput.nextLine().trim().toLowerCase();
                     }
 
@@ -529,7 +540,7 @@ public class Screens {
                                 // ? but it does not parse correctly, then they entered an invalid date or typo.
                                 // ? Prompting them to retry or press enter to skip.
                             } catch (DateTimeParseException e) {
-                                System.out.print("Please enter a valid date (yyyy-mm-dd) or press Enter to skip: ");
+                                printInputWarning("Please enter a valid date (yyyy-mm-dd) or press Enter to skip:");
                                 cSearchStartDate = userInput.nextLine().trim();
                             }
                         }
@@ -548,7 +559,7 @@ public class Screens {
                                 LocalDate.parse(cSearchEndDate);
                                 validEndDate = true;
                             } catch (DateTimeParseException e) {
-                                System.out.print("Please enter a valid date (yyyy-mm-dd) or press Enter to skip: ");
+                                printInputWarning("Please enter a valid date (yyyy-mm-dd) or press Enter to skip:");
                                 cSearchEndDate = userInput.nextLine().trim();
                             }
                         }
@@ -580,7 +591,7 @@ public class Screens {
                     // ? produce an error. In this case, we will re prompt them until they give us one of the acceptable
                     // ? formats.
                     while (!cSearchEntryType.equals("deposit") && !cSearchEntryType.equals("payment") && !cSearchEntryType.isEmpty()) {
-                        System.out.print("Please answer 'Deposit' or 'Payment' letter for letter:");
+                        printInputWarning("Please answer 'Deposit' or 'Payment' letter for letter:");
                         cSearchEntryType = userInput.nextLine().trim().toLowerCase();
                     }
 
@@ -607,7 +618,7 @@ public class Screens {
                                 // ? a letter or something other. Will continue to prompt them until they provide
                                 // ? a valid answer.
                             } catch (NumberFormatException e) {
-                                System.out.print("Please enter a valid amount in a xx.xx format (e.g. 59.99): ");
+                                printInputWarning("Please enter a valid amount in a xx.xx format (e.g. 59.99):");
                                 cSearchAmount = userInput.nextLine().trim();
                             }
                         }
@@ -752,7 +763,7 @@ public class Screens {
                 // ? If the user does not select from the valid options, it will prompt them to choose a valid
                 // ? choice
                 default:
-                    System.out.println("Please enter a valid option. Refer to the numbers next to the options.");
+                    printWarning("Please enter a valid option. Refer to the numbers next to the options.");
                     break;
             }
             reportsScreenIteration++;
