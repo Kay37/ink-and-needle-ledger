@@ -36,9 +36,8 @@ Built as Capstone 1 for the Year Up United Java Focus Academy.
 | **3) Year To Date** | Transactions from January 1st until today |
 | **4) Previous Year** | Every transaction from last year |
 | **5) Search by Vendor** | Every transaction for one vendor or client |
+| **6) Custom Search** | Filter by any mix of dates, description, vendor, deposit or payment, and amount |
 | **0) Back** | Goes back to the ledger screen |
-
-<!-- TODO: if you build the bonus, add "6) Custom Search" here -->
 
 ## The transaction file
 
@@ -79,8 +78,45 @@ date|time|description|vendor|amount
 
 ## An interesting piece of code
 
-<!-- TODO: once it's built, pick the piece you'll show on demo day, paste a short snippet, and
-     explain in 2-3 sentences what it does and why you're proud of it. -->
+**Custom Search** (reports option 6) filters by any mix of start date, end date, description,
+vendor, deposit or payment, and amount, and every one of those can be skipped. The trick that
+makes them all optional: each transaction starts out as a match, and each filter that was
+filled in can only knock it out.
+
+```java
+for (Transaction transaction : newestFirstTransactions) {
+    boolean isMatch = true;   // a match until a filter says otherwise
+
+    if (!cSearchVendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(cSearchVendor)) {
+        isMatch = false;
+    }
+    if (!cSearchStartDate.isEmpty()) {
+        LocalDate startDate = LocalDate.parse(cSearchStartDate);
+        if (transaction.getDate().isBefore(startDate)) {
+            isMatch = false;
+        }
+    }
+    if (!cSearchAmount.isEmpty()) {
+        double searchAmount = Double.parseDouble(cSearchAmount);
+        if (Math.abs(searchAmount) != Math.abs(transaction.getAmount())) {
+            isMatch = false;
+        }
+    }
+    // ...description, end date, and deposit or payment work the same way
+
+    if (isMatch) {
+        customSearchList.add(transaction);
+    }
+}
+printTable(customSearchList);
+```
+
+Why I like it:
+- A skipped filter is never checked, so it can't knock anything out. Without this pattern I'd
+  need an `if` for every combination of filters. Adding a new filter is just one more `if`.
+- `Math.abs` on both sides means typing `320` also finds a `-320.00` payment.
+- Bad dates and amounts are caught earlier with `try`/`catch` and asked for again, so the
+  parsing inside the loop never crashes.
 
 ## What I learned
 
