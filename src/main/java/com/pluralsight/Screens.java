@@ -120,7 +120,7 @@ public class Screens {
 \u001B[31m       __________________________________
   ____|                                  |____
   \\   |  \u001B[1;37m%-30s\u001B[0;31m  |   /
-   >  |  \u001B[90m%-30s\u001B[31m  |  <
+   >  |  \u001B[90m%-30.30s\u001B[31m  |  <
   /___|__________________________________|___\\\u001B[0m
 """;
 
@@ -419,10 +419,11 @@ public class Screens {
             String ledgerScreenChoice = userInput.nextLine().toLowerCase().trim();
             switch (ledgerScreenChoice) {
                 case "a":
+                    printHeader(PLAIN_RIBBON, "A L L   E N T R I E S", "every dollar, newest first");
                     printTable(newestFirstTransactions);
                     break;
                 case "d":
-                    System.out.println("Here is a list of all deposits: ");
+                    printHeader(PLAIN_RIBBON, "D E P O S I T S", "money in, newest first");
                     ArrayList<Transaction> depositsOnly = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         if (transaction.checkIfDeposit()) {
@@ -432,7 +433,7 @@ public class Screens {
                     printTable(depositsOnly);
                     break;
                 case "p":
-                    System.out.println("Here is a list of all payments: ");
+                    printHeader(PLAIN_RIBBON, "P A Y M E N T S", "money out, newest first");
                     ArrayList<Transaction> paymentsOnly = new ArrayList<>();
                     for (Transaction transaction : newestFirstTransactions) {
                         if (!transaction.checkIfDeposit()) {
@@ -470,6 +471,9 @@ public class Screens {
         LocalDate today = LocalDate.now();
         LocalDate lastMonth = today.minusMonths(1);
         LocalDate lastYear = today.minusYears(1);
+        DateTimeFormatter monthDay = DateTimeFormatter.ofPattern("MMM d");
+        DateTimeFormatter monthDayYear =  DateTimeFormatter.ofPattern("MMM d, yyyy");
+
         int reportsScreenIteration = 0;
         boolean reportsScreenRunning = true;
         while (reportsScreenRunning) {
@@ -505,6 +509,13 @@ public class Screens {
                             monthToDateList.add(transaction);
                         }
                     }
+
+                    LocalDate monthToDateStart =
+                            today.withDayOfMonth(1);
+                    String monthToDate =
+                            monthToDateStart.format(monthDay) + " - " + today.format(monthDayYear);
+                    printHeader(PLAIN_RIBBON, "M O N T H   T O   D A T E", monthToDate);
+
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(monthToDateList);
                     break;
@@ -523,6 +534,16 @@ public class Screens {
                         }
                     }
 
+
+                    LocalDate previousMonthStart =
+                            lastMonth.withDayOfMonth(1);
+                    LocalDate previousMonthEnd =
+                            lastMonth.withDayOfMonth(lastMonth.lengthOfMonth());
+                    String previousMonthDatesConnected =
+                            previousMonthStart.format(monthDay) + " - " + previousMonthEnd.format(monthDayYear);
+
+                    printHeader(PLAIN_RIBBON, "P R E V I O U S   M O N T H", previousMonthDatesConnected);
+
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(previousMonthList);
                     break;
@@ -539,6 +560,13 @@ public class Screens {
                             yearToDateList.add(transaction);
                         }
                     }
+
+
+                    LocalDate yearToDateStart =
+                            today.withDayOfYear(1);
+                    String yearToDate =
+                            yearToDateStart.format(monthDay) + " - " + today.format(monthDayYear);
+                    printHeader(PLAIN_RIBBON, "Y E A R   T O   D A T E",  yearToDate);
 
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(yearToDateList);
@@ -557,6 +585,14 @@ public class Screens {
                     }
 
                     // ? Use printTable to display our ArrayList in the way we want
+                    LocalDate previousYearStart =
+                            lastYear.withDayOfYear(1);
+                    LocalDate previousYearEnd =
+                            lastYear.withDayOfYear(lastYear.lengthOfYear());
+                    String previousYearConnected =
+                            previousYearStart.format(monthDay) + " - " + previousYearEnd.format(monthDayYear);
+                    printHeader(PLAIN_RIBBON, "P R E V I O U S   Y E A R", previousYearConnected);
+
                     printTable(previousYearList);
                     break;
                 case 5:
@@ -576,6 +612,8 @@ public class Screens {
                             searchByVendorList.add(transaction);
                         }
                     }
+
+                    printHeader(PLAIN_RIBBON, "V E N D O R   S E A R C H", vendorName);
 
                     // ? Use printTable to display our ArrayList in the way we want
                     printTable(searchByVendorList);
@@ -825,6 +863,8 @@ public class Screens {
                         }
 
                     }
+
+                    printHeader(PLAIN_RIBBON, "C U S T O M   S E A R C H", "your own mix of filters");
 
                     printTable(customSearchList);
                     break;
