@@ -119,6 +119,10 @@ public class Screens {
         double footerNet = 0;
         //? Loop to then format and print each row / line in the ArrayList after the header.
         for (Transaction transaction : transactionsToShow) {
+            // ? if the transaction currently being looped over is a deposit, then footerMoneyIn will be footerMoneyIn
+            // ? (0) + that transaction's amount.
+            // ? else - it's a payment - so footerMoneyOut (Math.abs to get the positive number and we can handle the
+            // ? sign our self so - goes on the outside of $
             if (transaction.checkIfDeposit()) {
                 footerMoneyIn += transaction.getAmount();
             } else {
@@ -127,25 +131,58 @@ public class Screens {
             System.out.println(transaction.transactionDisplayFormat(tablePosition));
             tablePosition++;
         }
+        // ? net gain will be money in (deposits) - money out (payments)
         footerNet = footerMoneyIn - footerMoneyOut;
 
+        // ? declaring Strings for the footer net value coloring (green or red for net gain or net loss)
         String footerNetColor;
+        // ? handling placement of negative sign for payments / loss.
         String amountSign;
         if (footerNet >= 0) {
             footerNetColor = ColorCoding.GREEN;
-            amountSign = "";
+            amountSign = "+";
         } else {
             footerNetColor = ColorCoding.RED;
             amountSign = "-";
         }
+        // ? code for entry or entries wording (1 entry or multiple)
         String footerEntryWord;
         if (transactionsToShow.size() == 1) {
             footerEntryWord = "entry";
         } else {
             footerEntryWord = "entries";
         }
+
+        // ? We want two numbers - each up to 30 blocks long. We can see a visual for the difference between
+        // ? money in and money out this way. The larger amount gets the full 30 blocks, and the smaller one
+        // ? gets the shorter bar / the lesser amount.
+
+        // ? This line is - which total is larger? Math.max looks at footerMoneyIn and MoneyOut and gives back the larger
+        // ? number.so largerTotal gets the larger bar (30 blocks)
+        double largerTotal = Math.max(footerMoneyIn, footerMoneyOut);
+        // ? how long is the money in bar? divide money in by largerTotal. if moneyIn IS the larger total, it will = 1
+        // ? * 30 = 30 blocks.
+        // ? We have to round the double (30.0) to 30 for a whole number of blocks (has to be int for repeat)
+        int moneyInBar = (int) Math.round(footerMoneyIn / largerTotal * 30);
+        int moneyOutBar = (int) Math.round(footerMoneyOut / largerTotal * 30);
+
+        // ? Our divider bar
         System.out.println(ColorCoding.MAGENTA + "- ".repeat(47) + ColorCoding.RESET);
-        System.out.printf("%d %s %s Money In: $%,.2f %s Money Out: $%,.2f %s Net: %s%s$%,.2f%s%n%n", transactionsToShow.size(), footerEntryWord, PIPE, footerMoneyIn, PIPE, footerMoneyOut, PIPE, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
+
+        // ? Printing entry / entries and the number (number of transactions)
+        System.out.printf("  %d %s%n",transactionsToShow.size(), footerEntryWord);
+
+        // ? Building and printing our cool little bar for deposits
+        String moneyInBarText =
+                ColorCoding.GREEN + "█".repeat(moneyInBar) + ColorCoding.GRAY + "░".repeat(30 - moneyInBar) + ColorCoding.RESET;
+        System.out.printf("  in   %s  %s$%,.2f%s %n", moneyInBarText, ColorCoding.GREEN, footerMoneyIn, ColorCoding.RESET);
+
+        // ? Building and printing our cool little bar for payments
+        String moneyOutBarText =
+                ColorCoding.RED + "█".repeat(moneyOutBar) + ColorCoding.GRAY + "░".repeat(30 - moneyOutBar) + ColorCoding.RESET;
+        System.out.printf("  out  %s  %s$%,.2f%s %n", moneyOutBarText, ColorCoding.RED, footerMoneyOut, ColorCoding.RESET);
+        // ? Printing our net gain / loss after deposits - payments
+        System.out.printf("  net  %s  %s%s$%,.2f%s%n%n", " ".repeat(30), footerNetColor, amountSign, Math.abs(footerNet),  ColorCoding.RESET);
     }
 
     //! Method that will display the Home Screen when called / user chooses that action.
