@@ -1,3 +1,4 @@
+
 package com.pluralsight;
 
 import java.time.LocalDate;
@@ -8,11 +9,13 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Comparator;
-
+import java.util.Random;
 import static com.pluralsight.ColorCoding.PIPE;
 
 public class Screens {
 
+    // ! An array holding my welcome banner possible designs (randomly picked)
+    // ! """ must be followed by a , to separate text blocks / positions.
     private static final String[] WELCOME_BANNER_DESIGNS = {
             """
                    _.-~~-._
@@ -76,15 +79,18 @@ public class Screens {
 """
     };
 
-    //! Helper method to display welcome banner
+    //! Helper method to display welcome banner(s)
     public static void welcomeBanner() {
+
+        // ? Creating a new random number maker like how you make a new scanner.
+        Random random = new Random();
+        // ? random.nextInt gives back a whole number from 0 up to, but not including, the number within the
+        // ? parameter. Storing this function result within variable designNumber.
+        // ? We are choosing the length of the Array I created because if we add designs .length becomes 5 by iteslf
+        // ? and I don't need to make changes.
+        int designNumber = random.nextInt(WELCOME_BANNER_DESIGNS.length);
+        System.out.println(WELCOME_BANNER_DESIGNS[designNumber]);
         System.out.printf("""
-                ╔════════════════════════════════════════════╗
-                ║                                            ║
-                ║         I N K   &   N E E D L E            ║
-                ║         tattoo studio  ·  ledger           ║
-                ║                                            ║
-                ╚════════════════════════════════════════════╝
                 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
                 Welcome back! Today's date and time: %s
                 """, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy',' HH:mm:ss")));
