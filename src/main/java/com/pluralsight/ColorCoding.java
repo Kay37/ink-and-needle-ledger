@@ -20,5 +20,9 @@ public class ColorCoding {
     public static final String PIPE = ColorCoding.MAGENTA + "¦" + ColorCoding.RESET;
     // ? cyan for welcome banner design color
     public static final String CYAN = "\u001B[36m";
+    // ? For warning messages!
     public static final String HIGHLIGHT = "\u001B[43;30;1m";
+    // ! Some colors for our neon exit sign
+    public static final String NEON_RED = "\u001B[1;31m";
+
 }

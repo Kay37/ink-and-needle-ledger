@@ -79,6 +79,24 @@ public class Screens {
 """
     };
 
+    //! Area for my exit / closed sign work
+    private static final String[] NEON_CLOSED_LETTERS = {
+            "┌──  │    ┌─┐  ┌──  ┌──  ┌─╮",
+            "│    │    │ │  └─┐  ├─   │ │",
+            "└──  └──  └─┘  ──┘  └──  └─╯"
+    };
+
+    public static void exitSign() {
+        System.out.println(ColorCoding.MAGENTA + "╭" + "─".repeat(36) + "╮" + ColorCoding.RESET);
+        System.out.println(ColorCoding.MAGENTA + "│" + " ".repeat(36) + "│" + ColorCoding.RESET);
+        for (String letterRow : NEON_CLOSED_LETTERS) {
+            System.out.println(ColorCoding.MAGENTA + "│    " + ColorCoding.NEON_RED + letterRow + ColorCoding.MAGENTA + "    │" + ColorCoding.RESET);
+        }
+        System.out.println(ColorCoding.MAGENTA + "│" + " ".repeat(36) + "│" + ColorCoding.RESET);
+        System.out.println(ColorCoding.MAGENTA + "│" + " ".repeat(8) + ColorCoding.GRAY + "see you next session" + ColorCoding.MAGENTA + " ".repeat(8) + "│" + ColorCoding.RESET);
+        System.out.println(ColorCoding.MAGENTA + "╰" + "─".repeat(36) + "╯" + ColorCoding.RESET);
+    }
+
     //! Helper method to display welcome banner(s)
     public static void welcomeBanner() {
 
@@ -308,7 +326,7 @@ public class Screens {
                     Screens.ledgerScreen(userInput, inkAndNeedleTransactions);
                     break;
                 case "x":
-                    System.out.println("Thank you for using this application!");
+                    exitSign();
                     homeScreenRunning = false;
                     break;
                 default:
