@@ -79,12 +79,61 @@ public class Screens {
 """
     };
 
+    private static final String[] HEADER_DESIGNS = {
+            """
+\u001B[31m  .-~-.         __________________________________
+ ( (\u001B[1;31m@\u001B[0;31m) )   ____|                                  |____
+  '-.-'    \\   |  \u001B[1;37m%-30s\u001B[0;31m  |   /
+\u001B[32m  \\_|_/    \u001B[31m >  |  \u001B[90m%-30s\u001B[31m  |  <
+\u001B[32m    |      \u001B[31m/___|__________________________________|___\\\u001B[0m
+""",
+            """
+\u001B[33m   ()
+\u001B[31m   ||          __________________________________
+\u001B[33m o=##=o   \u001B[31m____|                                  |____
+\u001B[37m   ||     \u001B[31m\\   |  \u001B[1;37m%-30s\u001B[0;31m  |   /
+\u001B[37m   ||     \u001B[31m >  |  \u001B[90m%-30s\u001B[31m  |  <
+\u001B[37m   ||     \u001B[31m/___|__________________________________|___\\
+\u001B[37m   \\/\u001B[0m
+""",
+            """
+\u001B[33m    _\u001B[31m           __________________________________
+\u001B[33m   (_)     \u001B[31m____|                                  |____
+\u001B[33m  --+--    \u001B[31m\\   |  \u001B[1;37m%-30s\u001B[0;31m  |   /
+\u001B[33m    |      \u001B[31m >  |  \u001B[90m%-30s\u001B[31m  |  <
+\u001B[33m \\  |  /   \u001B[31m/___|__________________________________|___\\
+\u001B[33m  '-+-'\u001B[0m
+""",
+            """
+\u001B[90m .-----------.                                                    .-----------.
+ |\u001B[1;37mA\u001B[0;90m          |\u001B[31m         __________________________________\u001B[90m         |\u001B[1;31mA\u001B[0;90m          |
+ |     \u001B[37m.\u001B[90m     |    \u001B[31m____|                                  |____\u001B[90m    |    \u001B[31m.'.\u001B[90m    |
+ |    \u001B[37m/ \\\u001B[90m    |    \u001B[31m\\   |  \u001B[1;37m%-30s\u001B[0;31m  |   /\u001B[90m    |  \u001B[31m.'   '.\u001B[90m  |
+ |   \u001B[37m(_,_)\u001B[90m   |    \u001B[31m >  |  \u001B[90m%-30s\u001B[31m  |  <\u001B[90m     |  \u001B[31m'.   .'\u001B[90m  |
+ |     \u001B[37mI\u001B[90m     |    \u001B[31m/___|__________________________________|___\\\u001B[90m    |    \u001B[31m'.'\u001B[90m    |
+ |          \u001B[1;37mA\u001B[0;90m|                                                    |          \u001B[1;31mA\u001B[0;90m|
+ '-----------'                                                    '-----------'\u001B[0m
+"""
+    };
+
+    private static final String PLAIN_RIBBON = """
+\u001B[31m       __________________________________
+  ____|                                  |____
+  \\   |  \u001B[1;37m%-30s\u001B[0;31m  |   /
+   >  |  \u001B[90m%-30s\u001B[31m  |  <
+  /___|__________________________________|___\\\u001B[0m
+""";
+
     //! Area for my exit / closed sign work
     private static final String[] NEON_CLOSED_LETTERS = {
             "┌──  │    ┌─┐  ┌──  ┌──  ┌─╮",
             "│    │    │ │  └─┐  ├─   │ │",
             "└──  └──  └─┘  ──┘  └──  └─╯"
     };
+
+    private static void printHeader(String headerDesign, String title, String subtitle) {
+        System.out.printf(headerDesign, title,  subtitle);
+    }
 
     //! helper method to display our exit sign
     public static void exitSign() {
@@ -351,7 +400,9 @@ public class Screens {
                         .thenComparing(Transaction::getDescription).reversed()
         );
 
-        System.out.println("Welcome to the ledger screen! Please choose an option below: ");
+        Random random = new Random();
+        int ledgerPick = random.nextInt(HEADER_DESIGNS.length);
+        printHeader(HEADER_DESIGNS[ledgerPick], "T H E   B O O K S", "pick an option below");
         int ledgerScreenIteration = 0;
         boolean ledgerScreenRunning = true;
         while (ledgerScreenRunning) {
@@ -391,7 +442,7 @@ public class Screens {
                     printTable(paymentsOnly);
                     break;
                 case "r":
-                    Screens.reportsScreen(userInput, newestFirstTransactions);
+                    Screens.reportsScreen(userInput, newestFirstTransactions, ledgerPick);
                     break;
                 case "h":
                     ledgerScreenRunning = false;
@@ -408,9 +459,13 @@ public class Screens {
     //! Same deal as the ledgerScreen method. reportsScreen is nested within the ledgerScreen.
     //! It's public and static so that it can be called from anywhere, and it's a void because all it does is print
     //! information / run code it doesn't return anything.
-    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions) {
-        System.out.println("Welcome to the reports screen! Please choose an option below: ");
-
+    public static void reportsScreen(Scanner userInput, ArrayList<Transaction> newestFirstTransactions, int ledgerPick) {
+        Random random = new Random();
+        int reportsPick = random.nextInt(HEADER_DESIGNS.length);
+        while (reportsPick == ledgerPick) {
+            reportsPick = random.nextInt(HEADER_DESIGNS.length);
+        }
+        printHeader(HEADER_DESIGNS[reportsPick], "F L A S H   S H E E T", "reports & searches");
         //
         LocalDate today = LocalDate.now();
         LocalDate lastMonth = today.minusMonths(1);
