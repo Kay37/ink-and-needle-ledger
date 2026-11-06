@@ -110,9 +110,9 @@ public class Screens {
             return;
         }
         //? Header printing
-        System.out.printf("%3s  %-10s%s%-8s%s%-36s%s%-20s%s%11s%n", "#", "DATE", PIPE, "TIME", PIPE, "DESCRIPTION", PIPE, "VENDOR", PIPE, "AMOUNT");
+        System.out.printf("%3s  %-10s%s%-8s%s%-36s%s%-20s%s%11s%n", "#",  "DATE", PIPE, "TIME", PIPE, "DESCRIPTION", PIPE, "VENDOR", PIPE, "AMOUNT");
         //? Header separation / divider
-        System.out.println(ColorCoding.GRAY + "─".repeat(94) + ColorCoding.RESET);
+        System.out.println(ColorCoding.MAGENTA + "- ".repeat(47) + ColorCoding.RESET);
         int tablePosition = 1;
         double footerMoneyIn = 0;
         double footerMoneyOut = 0;
@@ -144,7 +144,7 @@ public class Screens {
         } else {
             footerEntryWord = "entries";
         }
-        System.out.println(ColorCoding.GRAY + "─".repeat(94) + ColorCoding.RESET);
+        System.out.println(ColorCoding.MAGENTA + "- ".repeat(47) + ColorCoding.RESET);
         System.out.printf("%d %s %s Money In: $%,.2f %s Money Out: $%,.2f %s Net: %s%s$%,.2f%s%n%n", transactionsToShow.size(), footerEntryWord, PIPE, footerMoneyIn, PIPE, footerMoneyOut, PIPE, footerNetColor, amountSign, Math.abs(footerNet), ColorCoding.RESET);
     }
 
