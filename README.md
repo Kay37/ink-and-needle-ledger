@@ -51,7 +51,7 @@ date|time|description|vendor|amount
 ```
 
 - Positive amounts are deposits, negative amounts are payments.
-- The sample file holds made-up studio data from January 2025 to October 2026,
+- The sample file holds made-up studio data from January 2025 to early November 2026,
   so every report has something to show.
 
 ## How to run it
